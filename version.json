@@ -1,0 +1,24 @@
+{
+  "_comment": "TokkiYou release metadata read by the app updater.",
+  "version": "1.0.0",
+  "url": "https://github.com/BottomSalamander/TokkiYou/releases/latest/download/tokkiyou.apk",
+  "notes": "TokkiYou 1.0.0 is ready.",
+  "notes_ru": "TokkiYou 1.0.0 готов.",
+  "notes_uk": "TokkiYou 1.0.0 готовий.",
+  "features": [
+    "Zen Mode: hide or restore video overlays from Share quick actions.",
+    "Copy clean video links without tracking parameters.",
+    "Copy video ID, author, sound and exact publication time."
+  ],
+  "features_ru": [
+    "Режим Zen: скрывайте и возвращайте элементы поверх видео из меню «Поделиться».",
+    "Копируйте ссылки на видео без отслеживающих параметров.",
+    "Копируйте ID видео, автора, звук и точное время публикации."
+  ],
+  "features_uk": [
+    "Режим Zen: приховуйте й повертайте елементи поверх відео з меню «Поділитися».",
+    "Копіюйте посилання на відео без параметрів відстеження.",
+    "Копіюйте ID відео, автора, звук і точний час публікації."
+  ],
+  "force_update": false
+}

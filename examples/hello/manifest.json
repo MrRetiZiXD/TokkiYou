@@ -1,0 +1,11 @@
+{
+  "id": "margyt.hello",
+  "name": "Hello",
+  "name_ru": "Привет",
+  "version": "1.0",
+  "author": "narezany",
+  "description": "Writes a line in the mod's diary every time TikTok starts.",
+  "description_ru": "Пишет строку в журнал мода при каждом запуске TikTok.",
+  "entry": "cat.narezany.hello.Hello",
+  "min_api": 3
+}

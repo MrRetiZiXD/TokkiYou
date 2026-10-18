@@ -1,0 +1,107 @@
+{
+  "_comment": "Badges TokkiYou draws after a name. The app reads this file from the repository at startup and every five minutes, so a badge is added by editing it here -- no new build, no update.",
+  "_fields": {
+    "id": "anything, as long as it is unique",
+    "users": "TikTok account ids, the numeric ones that do not change with the username",
+    "image": "a path in this repository; leave it out for the mod's own note",
+    "colour": "RRGGBB to paint the image with; leave it out to keep its own colours",
+    "title": "the heading of the window the badge opens",
+    "text": "what the window says",
+    "button": "what the window's button says",
+    "*_ru, *_uk": "the same field in that language; the app picks by the phone's language"
+  },
+  "badges": [
+    {
+      "id": "owner",
+      "users": [
+        "7551880794956989495"
+      ],
+      "colour": "8DD1B0",
+      "title": "TokkiYou",
+      "text": "The owner of TokkiYou",
+      "text_ru": "Владелец TokkiYou",
+      "text_uk": "Власник TokkiYou",
+      "button": "Got it",
+      "button_ru": "Понятно",
+      "button_uk": "Зрозуміло"
+    },
+    {
+      "id": "helper",
+      "users": [
+        "6525428607760733199"
+      ],
+      "colour": "64B5F6",
+      "title": "TokkiYou",
+      "text": "помог с разработкой TokkiYou",
+      "button": "Got it",
+      "button_ru": "Понятно",
+      "button_uk": "Зрозуміло"
+    },
+    {
+      "id": "hype",
+      "users": [
+        "7547438221832160262"
+      ],
+      "colour": "E57373",
+      "title": "TokkiYou",
+      "text": "мемодел, хайпует плесень",
+      "button": "Got it",
+      "button_ru": "Понятно",
+      "button_uk": "Зрозуміло"
+    },
+    {
+      "id": "icon",
+      "users": [
+        "7287645946535560197",
+        "7643071085839533070",
+        "7639730829493896210",
+        "7510468511841141767",
+        "6774941623367320582",
+        "7573980629898494987",
+        "7547438221832160262",
+        "7662504626076730386",
+        "7163703793812554757",
+        "7386219126748267525",
+        "7676876536330650638",
+        "7307204820577387525"
+      ],
+      "colour": "B388FF",
+      "title": "TokkiYou",
+      "text": "drew an icon TokkiYou ships with",
+      "text_ru": "нарисовал иконку, которая есть в TokkiYou",
+      "text_uk": "намалював іконку, яка є в TokkiYou",
+      "button": "Got it",
+      "button_ru": "Понятно",
+      "button_uk": "Зрозуміло"
+    },
+    {
+      "id": "supporter",
+      "users": [
+        "7492852642231059461",
+        "7600534060289082382",
+        "7660087479496016903"
+      ],
+      "colour": "FF6FA5",
+      "title": "TokkiYou",
+      "text": "supported the making of TokkiYou",
+      "text_ru": "поддержал разработку TokkiYou",
+      "text_uk": "підтримав розробку TokkiYou",
+      "button": "Got it",
+      "button_ru": "Понятно",
+      "button_uk": "Зрозуміло"
+    },
+    {
+      "id": "chonky",
+      "users": [
+        "7641667656839382038",
+        "7662504626076730386"
+      ],
+      "colour": "FFE9A0",
+      "title": "TokkiYou",
+      "text": "толстопузый TokkiYou",
+      "button": "uhh nope",
+      "button_ru": "нет",
+      "button_uk": "no"
+    }
+  ]
+}

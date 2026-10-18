@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "my.commands",
+  "name": "Мои команды",
+  "version": "1.0",
+  "author": "Автор",
+  "rows": [
+    {
+      "title": "Подсказка",
+      "action": "window",
+      "value": "Плагин работает без сборки"
+    }
+  ]
+}

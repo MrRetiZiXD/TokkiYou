@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="yandex-verification" content="e82caa2dfbcc1d36" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TokkiYou</title>
+<meta name="description" content="TokkiYou — мод TikTok с настройками, значками и оформлением.">
+<meta property="og:title" content="TokkiYou">
+<meta property="og:description" content="Мод тиктока, переписанный под себя.">
+<meta property="og:image" content="/margyt.png">
+<link rel="canonical" href="https://margy.narez.xyz/">
+<link rel="icon" href="/margyt.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R5 V4 */
+:root{
+  --paper:#f2efe7; --paper-2:#fbfaf6; --ink:#16211d; --ink-2:#4a5a53;
+  --mint:#8dd1b0; --accent:#2f6f52; --rule:#d8d3c6; --on-accent:#f4f1ea;
+  --font-display:"Unbounded",system-ui,sans-serif;
+  --font-body:"Golos Text",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+}
+html[data-theme="dark"]{
+  --paper:#111714; --paper-2:#182220; --ink:#e7eee9; --ink-2:#9aaca3;
+  --accent:#8dd1b0; --rule:#28342f; --on-accent:#0f1512;
+}
+@media (prefers-color-scheme:dark){
+  html:not([data-theme="light"]){
+    --paper:#111714; --paper-2:#182220; --ink:#e7eee9; --ink-2:#9aaca3;
+    --accent:#8dd1b0; --rule:#28342f; --on-accent:#0f1512;
+  }
+}
+*{box-sizing:border-box}
+html,body{overflow-x:clip;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+
+.top{display:flex;align-items:center;gap:13px;padding:20px 0 0;flex-wrap:wrap}
+.top .mark{width:32px;height:32px;border-radius:9px;display:block}
+.top b{font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-.01em}
+.top nav{margin-left:auto;display:flex;align-items:center;gap:16px;font-size:15px}
+.top nav a{color:var(--ink-2);text-decoration:none;white-space:nowrap}
+.top nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.switches{display:flex;gap:6px;margin-left:4px}
+.sw{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;
+  background:none;border:1px solid var(--rule);color:var(--ink-2);
+  border-radius:8px;padding:6px 9px;cursor:pointer;line-height:1}
+.sw:hover{color:var(--ink);border-color:var(--ink-2)}
+.sw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.open{padding:60px 0 8px}
+.open h1{font-family:var(--font-display);font-weight:800;font-size:clamp(32px,6.6vw,58px);
+  line-height:1.05;letter-spacing:-.02em;margin:0 0 18px;max-width:16ch;overflow-wrap:anywhere}
+.open h1 em{font-style:normal;color:var(--accent)}
+.open p{margin:0 0 36px;max-width:52ch;font-size:clamp(17px,2.3vw,19px);color:var(--ink-2)}
+
+.things{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));padding-bottom:52px}
+.thing{background:var(--paper-2);border:1px solid var(--rule);border-radius:18px;
+  padding:22px;display:flex;flex-direction:column;gap:16px}
+.thing .head{display:flex;align-items:center;gap:13px}
+.thing .head img{width:50px;height:50px;border-radius:13px;display:block}
+.thing h2{font-family:var(--font-display);font-weight:600;font-size:20px;margin:0;letter-spacing:-.01em}
+.thing .sub{color:var(--ink-2);font-size:14px;margin-top:3px}
+.meta{font-family:var(--font-mono);font-size:12.5px;color:var(--ink-2);
+  display:flex;flex-wrap:wrap;gap:5px 14px;font-variant-numeric:tabular-nums}
+.meta b{font-weight:500;color:var(--ink)}
+.get{margin-top:auto;display:flex;align-items:center;justify-content:center;
+  background:var(--ink);color:var(--paper);text-decoration:none;border-radius:12px;
+  padding:14px 18px;font-weight:600;font-size:16px;white-space:nowrap;transition:background .15s ease}
+.get:hover{background:var(--accent);color:var(--on-accent)}
+.get:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.also{font-size:14px;color:var(--ink-2)}
+.also a{color:var(--accent)}
+
+.chapter{padding:50px 0;border-top:1px solid var(--rule)}
+.chapter h3{font-family:var(--font-display);font-weight:600;font-size:clamp(23px,4vw,31px);
+  margin:0 0 24px;letter-spacing:-.015em}
+.rows{display:grid;gap:0;margin:0}
+.row{display:grid;grid-template-columns:minmax(0,12rem) minmax(0,1fr);gap:6px 26px;
+  padding:15px 0;border-top:1px solid var(--rule)}
+.row:first-child{border-top:none;padding-top:0}
+.row dt{font-weight:600;margin:0}
+.row dd{margin:0;color:var(--ink-2)}
+@media (max-width:640px){.row{grid-template-columns:minmax(0,1fr)}}
+
+.strip{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:var(--paper-2);
+  border:1px solid var(--rule);border-radius:999px;padding:6px 14px 6px 9px;font-size:14px}
+.chip .pic{width:19px;height:19px;flex:none;display:block}
+.chip .pic.tinted{background:var(--c,var(--ink));
+  -webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.chip em{font-style:normal;color:var(--ink-2);font-family:var(--font-mono);
+  font-size:12px;font-variant-numeric:tabular-nums}
+.quiet{color:var(--ink-2);font-size:14px}
+
+footer{border-top:1px solid var(--rule);padding:32px 0 56px;color:var(--ink-2);font-size:15px}
+footer .links{display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:14px}
+footer a{color:var(--accent)}
+footer small{display:block;max-width:60ch;line-height:1.55}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <img class="mark" src="/margyt.png" alt="">
+    <b>TokkiYou</b>
+    <nav>
+      <a href="https://t.me/tokkiyou" data-t="nav_channel">Канал</a>
+      <a href="https://t.me/tokkiyougroup" data-t="nav_forum">Форум</a>
+      <a href="https://github.com/BottomSalamander/TokkiYou">Исходники</a>
+      <span class="switches">
+        <button class="sw" id="lang" type="button">EN</button>
+        <button class="sw" id="theme" type="button" aria-label="тема">☾</button>
+      </span>
+    </nav>
+  </header>
+
+  <section class="open">
+    <h1 data-t="h1">Клиенты, <em>переписанные</em> под себя</h1>
+    <p data-t="lede">Тикток с настройками, которых в нём нет. Исходники открыты.</p>
+  </section>
+
+  <section class="things">
+    <article class="thing">
+      <div class="head">
+        <img src="/margyt.png" alt="">
+        <div>
+          <h2>TokkiYou</h2>
+          <div class="sub" data-t="tsub">тикток</div>
+        </div>
+      </div>
+      <div class="meta">
+        <span><span data-t="version">версия</span> <b id="tver">2.0</b></span>
+        <span data-t="tbase">на TikTok <b>47.2.41</b></span>
+        <span data-t="tsize">патчер <b>1,3 МБ</b></span>
+      </div>
+      <a class="get" href="https://git.narez.xyz/narezany/MargyT/releases/download/patcher-v1.1/margy-patcher.apk" data-t="download">Скачать патчер</a>
+      <div class="also"><span data-t="patcher_note">Патчер сам скачает TikTok, наложит мод и будет обновлять его.</span></div>
+      <div class="also"><a id="tget" href="https://github.com/BottomSalamander/TokkiYou/releases/latest/download/tokkiyou.apk" data-t="direct">Готовый апк</a> · <span data-t="source">Исходники</span>: <a href="https://github.com/BottomSalamander/TokkiYou">TokkiYou</a></div>
+    </article>
+
+  </section>
+
+  <section class="chapter">
+    <h3 data-t="th">TokkiYou</h3>
+    <dl class="rows">
+      <div class="row"><dt data-t="t1">Без рекламы</dt>
+        <dd data-t="t1d">Реклама, прямые эфиры, фото-посты и хештеги по списку не попадают в ленту.</dd></div>
+      <div class="row"><dt data-t="t2">Скачивание</dt>
+        <dd data-t="t2d">Видео, фото, аватарки и стикеры сохраняются без водяного знака.</dd></div>
+      <div class="row"><dt data-t="t3">Регион</dt>
+        <dd data-t="t3d">66 стран на выбор.</dd></div>
+      <div class="row"><dt data-t="t4">Внешний вид</dt>
+        <dd data-t="t4d">Цвета своего телефона вместо розового и серого, шрифты, паки эмодзи и иконки приложения.</dd></div>
+      <div class="row"><dt data-t="t5">Значки</dt>
+        <dd data-t="t5d">Значок и градиент на ник, которые видят все с TokkiYou.</dd></div>
+      <div class="row"><dt data-t="t6">Плагины</dt>
+        <dd data-t="t6d">Магазин внутри мода, установка в одно нажатие.</dd></div>
+      <div class="row"><dt data-t="t7">Мелочи</dt>
+        <dd data-t="t7d">Ограничение fps, выключение HDR, дата под каждым видео, перемотка везде, воспроизведение в фоне.</dd></div>
+    </dl>
+  </section>
+
+  
+  <section class="chapter">
+    <h3 data-t="bh">Значки</h3>
+    <div class="strip" id="badges"><span class="quiet" data-t="loading">Загружаю…</span></div>
+  </section>
+
+  <section class="chapter">
+    <h3 data-t="ph">Плагины</h3>
+    <div class="strip" id="plugins"><span class="quiet" data-t="loading">Загружаю…</span></div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="https://t.me/tokkiyou" data-t="nav_channel">Канал</a>
+      <a href="https://t.me/tokkiyougroup" data-t="nav_forum">Форум</a>
+      <a href="https://github.com/BottomSalamander/TokkiYou">TokkiYou</a>
+    </div>
+    <small data-t="foot">TokkiYou под GPL-3.0 с условием, что блок с автором и поддержкой из мода не убирают. Апк TikTok принадлежит его владельцу.</small>
+  </div>
+</footer>
+
+<script>
+const WORDS = {
+  ru: {
+    nav_channel:"Канал", nav_forum:"Форум", download:"Скачать патчер", source:"Исходники", direct:"Готовый апк",
+    tsize:"патчер <b>1,3 МБ</b>", patcher_note:"Патчер сам скачает TikTok, наложит мод и будет обновлять его.",
+    version:"версия", loading:"Загружаю…",
+    h1:'Клиенты, <em>переписанные</em> под себя',
+    lede:"Тикток с настройками, которых в нём нет. Исходники открыты.",
+    tsub:"тикток",
+    tbase:'на TikTok <b>47.2.41</b>', mbase:'на Telegram <b>12.10.0</b>',
+    th:"TokkiYou", mh:"TokkiYou", bh:"Значки", ph:"Плагины",
+    t1:"Без рекламы", t1d:"Реклама, прямые эфиры, фото-посты и хештеги по списку не попадают в ленту.",
+    t2:"Скачивание", t2d:"Видео, фото, аватарки и стикеры сохраняются без водяного знака.",
+    t3:"Регион", t3d:"66 стран на выбор.",
+    t4:"Внешний вид", t4d:"Цвета своего телефона вместо розового и серого, шрифты, паки эмодзи и иконки приложения.",
+    t5:"Значки", t5d:"Значок и градиент на ник, которые видят все с TokkiYou.",
+    t6:"Плагины", t6d:"Магазин внутри мода, установка в одно нажатие.",
+    t7:"Мелочи", t7d:"Ограничение fps, выключение HDR, дата под каждым видео, перемотка везде, воспроизведение в фоне.", m1d:"Встроенный прокси включается одним переключателем, ничего настраивать не надо.", m2d:"Магазин, своя консоль, плагины от exteraGram тоже подходят.", m3d:"То, что о человеке написали другие. Снять написанное хозяин стены не может.", m4d:"Номер телефона и юзернейм скрыты везде, где приложение их показывает.", m5d:"Отправляются без премиума.", m6d:"Баннер, градиент и свои значки.", m7d:"Поле ввода сверху и на сколько угодно строк, свой шрифт, теги и обложка для музыки, удалённые подарки, папка «Все чаты», коты.",
+    foot:"TokkiYou под GPL-3.0 с условием, что блок с автором и поддержкой из мода не убирают. Апк TikTok принадлежит его владельцу.",
+    none:"Пока ни одного."
+  },
+  en: {
+    nav_channel:"Channel", nav_forum:"Forum", download:"Get the patcher", source:"Source", direct:"The finished apk",
+    tsize:"the patcher is <b>1.3 MB</b>", patcher_note:"The patcher downloads TikTok, applies the mod and keeps it up to date.",
+    version:"version", loading:"Loading…",
+    h1:'Clients, <em>rewritten</em> to taste',
+    lede:"TikTok with the settings it does not have. The source is open.",
+    tsub:"tiktok",
+    tbase:'on TikTok <b>47.2.41</b>', mbase:'on Telegram <b>12.10.0</b>',
+    th:"TokkiYou", mh:"TokkiYou", bh:"Badges", ph:"Plugins",
+    t1:"No ads", t1d:"Ads, live rooms, photo posts and hashtags you pick stay out of the feed.",
+    t2:"Downloads", t2d:"Videos, photos, avatars and stickers save without the watermark.",
+    t3:"Region", t3d:"66 countries to choose from.",
+    t4:"Looks", t4d:"Your phone's own colours instead of pink and grey, fonts, emoji packs and app icons.",
+    t5:"Badges", t5d:"A badge and a gradient on your name, seen by everyone on TokkiYou.",
+    t6:"Plugins", t6d:"A store inside the mod, one tap to install.",
+    t7:"Small things", t7d:"An fps cap, HDR off, the date under every video, scrubbing everywhere, playback in the background.", m1d:"A built-in proxy behind one switch, nothing to configure.", m2d:"A store, a console of its own, and exteraGram plugins fit too.", m3d:"What other people wrote about someone. The owner of the wall cannot take it down.", m4d:"The phone number and username are hidden everywhere the app shows them.", m5d:"Sent without premium.", m6d:"A banner, a gradient and badges of your own.", m7d:"The input field on top and as many lines as you like, your own font, tags and cover art for music, deleted gifts, an All Chats folder, cats.",
+    foot:"TokkiYou is GPL-3.0 with a term that keeps the author's notices in place. TikTok's apk belongs to its owner.",
+    none:"None yet."
+  }
+};
+
+let tongue = localStorage.getItem("tongue")
+  || ((navigator.language || "en").startsWith("ru") ? "ru" : "en");
+
+function speak(which) {
+  tongue = which;
+  try { localStorage.setItem("tongue", which); } catch (e) {}
+  document.documentElement.lang = which;
+  document.querySelectorAll("[data-t]").forEach(node => {
+    const said = WORDS[which][node.dataset.t];
+    if (said !== undefined) node.innerHTML = said;
+  });
+  document.getElementById("lang").textContent = which === "ru" ? "EN" : "RU";
+}
+
+document.getElementById("lang").onclick = () => speak(tongue === "ru" ? "en" : "ru");
+
+// theme: the system decides until somebody says otherwise
+const dark = matchMedia("(prefers-color-scheme: dark)");
+function paint(which) {
+  const root = document.documentElement;
+  if (which) { root.dataset.theme = which; try { localStorage.setItem("theme", which); } catch (e) {} }
+  const now = root.dataset.theme || (dark.matches ? "dark" : "light");
+  document.getElementById("theme").textContent = now === "dark" ? "☀" : "☾";
+}
+try {
+  const kept = localStorage.getItem("theme");
+  if (kept) document.documentElement.dataset.theme = kept;
+} catch (e) {}
+document.getElementById("theme").onclick = () => {
+  const now = document.documentElement.dataset.theme || (dark.matches ? "dark" : "light");
+  paint(now === "dark" ? "light" : "dark");
+};
+dark.addEventListener("change", () => paint());
+paint();
+speak(tongue);
+
+async function json(url, then) {
+  try {
+    const answer = await fetch(url, {cache: "no-store"});
+    if (answer.ok) then(await answer.json());
+  } catch (trouble) { /* offline: the page still reads */ }
+}
+
+json("https://raw.githubusercontent.com/BottomSalamander/TokkiYou/main/version.json", said => {
+  if (said.version) document.getElementById("tver").textContent = said.version;
+  if (said.url) document.getElementById("tget").href = said.url;
+});
+json("https://git.narez.xyz/narezany/Margy/raw/branch/main/version.json", said => {
+  if (said.version) document.getElementById("mver").textContent = said.version;
+  if (said.apk) document.getElementById("mget").href = said.apk;
+});
+
+json("/api/badges", said => {
+  const where = document.getElementById("badges");
+  const list = (said.badges || []).filter(one => (one.users || []).length);
+  if (!list.length) return;
+  where.innerHTML = "";
+  list.forEach(one => {
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    const address = "/api/icon/" + one.image;
+    // a badge picture is a white drawing the app paints with the badge's own
+    // colour; white on white is nothing, so it is painted here as well. The
+    // ones without a colour are real pictures and are shown as they are.
+    if (one.colour) {
+      const dot = document.createElement("span");
+      dot.className = "pic tinted";
+      dot.style.setProperty("--c", "#" + one.colour);
+      dot.style.setProperty("--m", "url(" + address + ")");
+      chip.append(dot);
+    } else {
+      const picture = document.createElement("img");
+      picture.className = "pic";
+      picture.src = address;
+      picture.alt = "";
+      chip.append(picture);
+    }
+    chip.append(document.createTextNode(
+      tongue === "ru" ? (one.title_ru || one.title || one.id) : (one.title || one.id)));
+    const many = document.createElement("em");
+    many.textContent = one.users.length;
+    chip.append(many);
+    where.append(chip);
+  });
+});
+
+json("/api/plugins", said => {
+  const where = document.getElementById("plugins");
+  const list = said.plugins || [];
+  where.innerHTML = "";
+  if (!list.length) {
+    where.innerHTML = '<span class="quiet">' + WORDS[tongue].none + "</span>";
+    return;
+  }
+  list.forEach(one => {
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    if (one.icon) {
+      const picture = document.createElement("img");
+      picture.className = "pic";
+      picture.src = "/api" + one.icon;
+      picture.alt = "";
+      chip.append(picture);
+    }
+    chip.append(document.createTextNode(one.name));
+    const by = document.createElement("em");
+    by.textContent = one.author;
+    chip.append(by);
+    where.append(chip);
+  });
+});
+</script>
+</body>
+</html>

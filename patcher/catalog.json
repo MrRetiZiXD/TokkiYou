@@ -1,0 +1,132 @@
+{
+ "_comment": "What the patcher reads to know which mods there are, what each is made from and where the patch is.",
+ "patcher": {
+  "version": "1.1",
+  "url": "https://git.narez.xyz/narezany/MargyT/releases/download/patcher-v1.1/margy-patcher.apk",
+  "sha256": "e35cb6835aafb2e70c381c67d0217689edd45206dd52f9d8c0a8ac0e917080c9",
+  "size": 1363657,
+  "notes": {
+   "ru": "Добавлен MargyC, мод на приложение Claude.",
+   "uk": "Додано MargyC, мод на застосунок Claude.",
+   "en": "MargyC, a mod of the Claude app, is here."
+  }
+ },
+ "channel": "https://t.me/tokkiyou",
+ "mods": [
+  {
+   "id": "tokkiyou",
+   "name": "TokkiYou",
+   "icon": "tokkiyou",
+   "package": "com.zhiliaoapp.musically",
+   "about": {
+    "ru": "Мод TikTok: оформление Material 3, скачивание без водяного знака, подмена региона, значки и многое другое.",
+    "uk": "Мод TikTok: оформлення Material 3, завантаження без водяного знака, підміна регіону, значки та багато іншого.",
+    "en": "A TikTok mod: Material 3 looks, downloads without a watermark, a region of your choice, badges and a lot more."
+   },
+   "releases": [
+    {
+     "version": "2.0.5",
+     "beta": false,
+     "base": {
+      "name": "TikTok 47.2.41",
+      "sha256": "4bcad2a15ac82da68d373629a9520f855781c3ec46f0e2937e605040285ba75c",
+      "size": 346017026,
+      "sources": [
+       {
+        "name": "margy.narez.xyz",
+        "url": "https://margy.narez.xyz/original/tiktok-47-2-41.apk",
+        "direct": true
+       }
+      ]
+     },
+     "patch": {
+      "url": "https://git.narez.xyz/narezany/MargyT/releases/download/v2.0.5/margyt-2.0.5.mpatch",
+      "sha256": "b200084e75ca80633f37c416eca44f916a8416724c4fccd832c584685329b48d",
+      "size": 71795912
+     },
+     "result": {
+      "sha256": "f0d4e8e462daaad2ceb51f7d867dd1260f96cda84cc8c8544b5140ec9e6f6f51",
+      "size": 395031582
+     },
+     "notes": {
+      "ru": "Меньше подлагов: мод больше не обходит экран перед каждым кадром. Убран «скрытый режим» с чёрным окном в недавних. Отчёт о лагах называет плагин, который тормозит.",
+      "uk": "Менше підлагів: мод більше не обходить екран перед кожним кадром. Прибрано «прихований режим» із чорним вікном у недавніх. Звіт про лаги називає плагін, який гальмує.",
+      "en": "Less stutter: the mod no longer goes over the screen before every frame. No more blacked-out window in recents. A lag report names the plugin that is holding the app up."
+     }
+    }
+   ]
+  },
+  {
+   "id": "tokkiyou-lite",
+   "name": "TokkiYou Lite",
+   "icon": "tokkiyou-lite",
+   "package": "com.zhiliaoapp.musically.go",
+   "about": {
+    "ru": "Лёгкий мод на TikTok Lite: подмена региона, тема и акцент, значки.",
+    "uk": "Легкий мод на TikTok Lite: підміна регіону, тема й акцент, значки.",
+    "en": "A light mod of TikTok Lite: a region of your choice, theme and accent, badges."
+   },
+   "releases": [
+    {
+     "version": "0.1",
+     "beta": false,
+     "base": {
+      "name": "TikTok Lite 47.1.4",
+      "sha256": "634c596e9f2c54b4e77600d4d1bdd96f1d0adad8bb661476a9df7cd21d3c6057",
+      "size": 90464759,
+      "sources": [
+       {
+        "name": "margy.narez.xyz",
+        "url": "https://margy.narez.xyz/original/tiktok-lite-47-1-4.apk",
+        "direct": true
+       }
+      ]
+     },
+     "patch": {
+      "url": "https://git.narez.xyz/narezany/MargyT/releases/download/lite-v0.1/margyt-lite-0.1.mpatch",
+      "sha256": "73dfad5b880930720d0486ba4620d1e6c3ab3ae6a4c2802fe641519496a80646",
+      "size": 32509991
+     },
+     "result": {
+      "sha256": "e49672e4873c94e61124550dc022f9b3143bca92fdcbfb9efae4c9dbc4e94c94",
+      "size": 121579916
+     },
+     "notes": {
+      "ru": "Первая бета. Подмена региона, тема по цветам телефона, акцент, значки.",
+      "uk": "Перша бета. Підміна регіону, тема за кольорами телефона, акцент, значки.",
+      "en": "The first beta. A region of your choice, a theme in the phone's colours, an accent, badges."
+     }
+    }
+   ]
+  },
+  {
+   "id": "margyc",
+   "name": "MargyC",
+   "icon": "margyc",
+   "package": "cat.narezany.claude",
+   "own_package": true,
+   "about": {
+    "ru": "Мод на приложение Claude: русский интерфейс, свои темы и обои, Clawd у поля ввода, мем-модели и свои моды. Ставится отдельным приложением рядом с оригиналом, вход по почте.",
+    "uk": "Мод на застосунок Claude: свої теми й шпалери, Clawd біля поля введення, мем-моделі та свої моди. Ставиться окремим застосунком поруч з оригіналом, вхід за поштою.",
+    "en": "A mod of the Claude app: your own themes and wallpapers, Clawd by the message box, meme models and mods of your own. Installs as a separate app beside the original; sign in by e-mail."
+   },
+   "releases": [],
+   "apks": [
+    {
+     "version": "1.3.1",
+     "beta": false,
+     "apk": {
+      "url": "https://github.com/narezy/MargyC/raw/69d62f2e9631ee8f9b9c14daf1d56e864dd35c7b/MargyC.apk",
+      "sha256": "9639ce98e2dcb7d4473f3117c678a4da4bb08b71e31f56f35180166933b356b0",
+      "size": 30800540
+     },
+     "notes": {
+      "ru": "Исправлен вылет после входа в аккаунт. Обои в чате, выбор иконки, виджет и мини-игра с Clawd, поиск в чате, статистика, режим стримера.",
+      "uk": "Виправлено виліт після входу в акаунт. Шпалери в чаті, вибір іконки, віджет і мінігра з Clawd, пошук у чаті, статистика, режим стримера.",
+      "en": "No more crash after signing in. Chat wallpapers, a choice of icon, a Clawd widget and mini-game, search in a chat, statistics, streamer mode."
+     }
+    }
+   ]
+  }
+ ]
+}

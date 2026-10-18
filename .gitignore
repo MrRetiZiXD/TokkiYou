@@ -1,0 +1,22 @@
+
+# Someone else's: the original apk and anything derived from it.
+apk/
+work/
+build/
+
+# Downloaded tooling
+tools/
+
+# Packed plugins: the sources are here, the zip is a build artefact
+*.mtp
+
+# Somebody else's source, shared in confidence and not ours to publish.
+# Read it here, take ideas from it, never commit a line of it.
+reference/
+vendor/
+*-source/
+*_source/
+
+__pycache__/
+*.pyc
+tools/jadx/

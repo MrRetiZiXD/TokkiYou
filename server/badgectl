@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""Hand out a badge, or take one back.
+
+    badgectl grant supporter 7551880794956989495 [more ids...]
+    badgectl take  supporter 7551880794956989495
+    badgectl who   7551880794956989495
+    badgectl list
+"""
+
+import os
+import sqlite3
+import sys
+import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+
+import badges as service
+
+
+def main(argv):
+    if len(argv) < 2:
+        print(__doc__.strip())
+        return 1
+
+    what = argv[1]
+    db = service.connect()
+    now = int(time.time())
+
+    if what == "list":
+        for row in db.execute(
+                "SELECT b.id, b.colour, COUNT(h.uid) FROM badge b"
+                " LEFT JOIN held h ON h.badge = b.id GROUP BY b.id ORDER BY b.id"):
+            print("%-12s #%-8s %d" % (row[0], row[1] or "-", row[2]))
+    elif what == "who" and len(argv) > 2:
+        for row in db.execute(
+                "SELECT badge, shown, place FROM held WHERE uid = ? ORDER BY place",
+                (argv[2],)):
+            print("%-12s %s  place %d" % (row[0], "shown" if row[1] else "hidden", row[2]))
+    elif what == "grant" and len(argv) > 3:
+        badge = argv[2]
+        if not db.execute("SELECT 1 FROM badge WHERE id = ?", (badge,)).fetchone():
+            print("no badge called %r" % badge)
+            return 1
+        for uid in argv[3:]:
+            db.execute("INSERT OR IGNORE INTO held (uid, badge, given_at)"
+                       " VALUES (?, ?, ?)", (uid, badge, now))
+            print("%s -> %s" % (uid, badge))
+        db.commit()
+    elif what == "take" and len(argv) > 3:
+        for uid in argv[3:]:
+            db.execute("DELETE FROM held WHERE uid = ? AND badge = ?", (uid, argv[2]))
+            print("%s no longer has %s" % (uid, argv[2]))
+        db.commit()
+    else:
+        print(__doc__.strip())
+        return 1
+
+    db.close()
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))

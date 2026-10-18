@@ -1,0 +1,9 @@
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+.kotlin/
+
+# the app has a package named "work"; the rule above this folder is for the build's scratch space
+!work/

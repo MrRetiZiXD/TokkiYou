@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="yandex-verification" content="e82caa2dfbcc1d36" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>нарезанный :: домашняя страничка</title>
+<meta name="description" content="Нарезанный. Мои проекты: TokkiYou и OpenRhythm.">
+<link rel="canonical" href="https://narez.xyz/">
+<meta property="og:title" content="нарезанный">
+<meta property="og:description" content="привет я нарезанный. вот мои проекты">
+<style>
+/* Сайт нарочно страшный. Единственное, чего ему нельзя: ломаться на телефоне. */
+html,body{margin:0;overflow-x:clip}
+body{
+  background:#000080 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><rect width='40' height='40' fill='%23000080'/><circle cx='7' cy='9' r='1.2' fill='%23fff'/><circle cx='28' cy='19' r='1' fill='%23ffff00'/><circle cx='16' cy='31' r='1.4' fill='%23fff'/><circle cx='35' cy='6' r='.9' fill='%2300ffff'/></svg>") repeat;
+  color:#00ff00;
+  font-family:"Comic Sans MS","Comic Neue",cursive,system-ui;
+  font-size:17px;line-height:1.5;
+  padding:10px;
+}
+.box{
+  max-width:620px;margin:14px auto;background:#c0c0c0;color:#000;
+  border:4px ridge #ffff00;padding:14px;
+}
+h1{
+  margin:0 0 6px;font-size:clamp(28px,8vw,46px);text-align:center;
+  color:#ff00ff;text-shadow:2px 2px 0 #00ffff,4px 4px 0 #000;
+  letter-spacing:-.5px;
+}
+.bar{
+  background:#000;color:#0f0;font-family:"Courier New",monospace;font-size:13px;
+  padding:4px 8px;margin:0 0 12px;overflow:hidden;white-space:nowrap;
+  border:2px inset #808080;
+}
+.bar span{display:inline-block;padding-left:100%;animation:run 14s linear infinite}
+@keyframes run{to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.bar span{animation:none;padding-left:0}}
+p{margin:10px 0}
+.pic{float:right;width:96px;height:96px;margin:0 0 8px 12px;border:3px double #800080;
+  image-rendering:pixelated;background:#8dd1b0}
+h2{font-size:20px;margin:18px 0 8px;color:#000080;text-decoration:underline}
+.buttons{display:flex;flex-wrap:wrap;gap:12px}
+.btn{
+  display:block;flex:1 1 210px;text-align:center;text-decoration:none;
+  background:linear-gradient(#f0f0f0,#a0a0a0);color:#000080;font-weight:bold;
+  border:3px outset #ffffff;padding:13px 10px;font-size:18px;
+}
+.btn:active{border-style:inset}
+.btn:focus-visible{outline:3px solid #ff00ff;outline-offset:2px}
+.btn small{display:block;font-weight:normal;color:#404040;font-size:13px;margin-top:3px}
+.blink{animation:blink 1.1s steps(2,start) infinite;color:#ff0000;font-weight:bold}
+.claim{font-size:clamp(19px,5vw,27px);font-weight:bold;color:#000080;
+  text-shadow:1px 1px 0 #fff;margin:14px 0 4px;overflow-wrap:anywhere}
+@keyframes blink{to{visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.blink{animation:none}}
+hr{border:none;border-top:2px groove #808080;margin:16px 0}
+.foot{text-align:center;font-size:13px;color:#000080}
+.count{font-family:"Courier New",monospace;background:#000;color:#0f0;padding:2px 6px;
+  border:2px inset #808080}
+a{color:#0000ee}
+a:visited{color:#551a8b}
+</style>
+</head>
+<body>
+
+<div class="box">
+  <div class="bar"><span>★ ★ ★ добро пожаловать на мою домашнюю страничку ★ ★ ★ здесь лежат мои проекты ★ ★ ★ сайт работает лучше всего в интернет эксплорере 6 ★ ★ ★</span></div>
+
+  <h1>привет я нарезанный</h1>
+
+  <img class="pic" src="/da.jpg" alt="">
+  <p class="claim">НЕ ВАЙБКОД ВСЕ САМ <span class="blink">✅✅✅</span></p>
+
+  <hr>
+
+  <h2>мои проекты</h2>
+  <div class="buttons">
+    <a class="btn" href="https://margy.narez.xyz">TokkiYou<small>тикток и телеграм</small></a>
+    <a class="btn" href="https://narezany.itch.io/open-rhythm">OpenRhythm<small>ритм-игра</small></a>
+  </div>
+
+  <hr>
+
+  <p class="foot">
+    я в телеграме: <a href="https://t.me/MrRetiZiXD">@mrretizixd</a> ·
+    код: <a href="https://github.com/BottomSalamander/TokkiYou">GitHub</a><br><br>
+    посетителей: <span class="count" id="count">000042</span><br>
+    <small>сделано вручную в 2026 году</small>
+  </p>
+</div>
+
+<script>
+// Счётчик как в двухтысячных: честно врёт, зато крутится.
+const seen = Number(localStorage.getItem("seen") || 41) + 1;
+try { localStorage.setItem("seen", seen); } catch (e) {}
+document.getElementById("count").textContent = String(seen).padStart(6, "0");
+</script>
+</body>
+</html>
