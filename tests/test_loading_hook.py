@@ -2,7 +2,7 @@
 import os, re, sys, tempfile, unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-from margyt import dexpatch  # noqa: E402
+from tokkiyou import dexpatch  # noqa: E402
 
 VIEW = """.class public final LX/0pWh;
 .super Landroid/view/View;
@@ -41,12 +41,12 @@ class LoadingHookTest(unittest.TestCase):
     def test_the_call_goes_before_anything_the_method_does(self):
         out, counts = self.rewrite(VIEW)
         self.assertEqual(counts, {"native loading indicator": 1})
-        hook = out.index("Lcat/narezany/margyt/Loading;->draw(Landroid/view/View;Landroid/graphics/Canvas;)Z")
+        hook = out.index("Lcat/narezany/tokkiyou/Loading;->draw(Landroid/view/View;Landroid/graphics/Canvas;)Z")
         self.assertLess(out.index(".prologue"), hook)
         self.assertLess(hook, out.index("move-object/from16 v11, p1"))
         # two registers past fifteen cannot be named one by one
-        self.assertIn("invoke-static/range {p0 .. p1}, Lcat/narezany/margyt/Loading;", out)
-        self.assertIn("    if-eqz v0, :margyt_loading_native\n\n    return-void\n\n    :margyt_loading_native\n", out)
+        self.assertIn("invoke-static/range {p0 .. p1}, Lcat/narezany/tokkiyou/Loading;", out)
+        self.assertIn("    if-eqz v0, :tokkiyou_loading_native\n\n    return-void\n\n    :tokkiyou_loading_native\n", out)
 
     def test_a_second_pass_changes_nothing(self):
         once, _ = self.rewrite(VIEW)
@@ -119,14 +119,14 @@ class CardCornersTest(unittest.TestCase):
             self.assertEqual(dexpatch.rewrite_cards(root), {"native card corners": 2})
             with open(path, encoding="utf-8") as handle:
                 out = handle.read()
-            call = "invoke-static/range {p0 .. p0}, Lcat/narezany/margyt/Corners;->cell(Landroid/view/View;)V"
+            call = "invoke-static/range {p0 .. p0}, Lcat/narezany/tokkiyou/Corners;->cell(Landroid/view/View;)V"
             # one before each way out of each constructor, none in onMeasure
             self.assertEqual(out.count(call), 3)
             self.assertNotIn(call, out[out.index(".method public final onMeasure"):])
             self.assertEqual(dexpatch.rewrite_cards(root), {"native card corners": 2})
             with open(path, encoding="utf-8") as handle:
                 self.assertEqual(handle.read(), out)
-        self.assertIn("Lcat/narezany/margyt/Corners;->cell(Landroid/view/View;)V", dexpatch.rewrite_targets())
+        self.assertIn("Lcat/narezany/tokkiyou/Corners;->cell(Landroid/view/View;)V", dexpatch.rewrite_targets())
 
     def test_a_dex_without_the_cell_is_left_alone(self):
         with tempfile.TemporaryDirectory() as root:

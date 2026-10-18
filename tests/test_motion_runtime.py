@@ -33,9 +33,9 @@ STUBS={
  public ViewPropertyAnimator alpha(float v){view.alpha=v;return this;}public ViewPropertyAnimator translationX(float v){view.x=v;return this;}public ViewPropertyAnimator translationY(float v){view.y=v;return this;}
  public ViewPropertyAnimator setDuration(long v){return this;}public ViewPropertyAnimator setInterpolator(Object v){return this;}public void start(){}public void finish(){Runnable r=end;end=null;if(r!=null)r.run();}
  }""",
-'cat/narezany/margyt/Accent.java':'package cat.narezany.margyt;class Accent {static int colour(){return -1;}}'
+'cat/narezany/tokkiyou/Accent.java':'package cat.narezany.tokkiyou;class Accent {static int colour(){return -1;}}'
 }
-HARNESS="""package cat.narezany.margyt;import android.view.*;
+HARNESS="""package cat.narezany.tokkiyou;import android.view.*;
 class MotionHarness {static void check(boolean ok,String message){if(!ok)throw new AssertionError(message);}public static void main(String[] args){
  View button=new View();
  android.graphics.drawable.GradientDrawable accent=new android.graphics.drawable.GradientDrawable();button.setBackground(accent);Motion.press(button);
@@ -55,12 +55,12 @@ class MotionRuntimeTest(unittest.TestCase):
  def test_touch_cancellation_and_navigation(self):
   with tempfile.TemporaryDirectory() as directory:
    work=pathlib.Path(directory);sources=dict(STUBS)
-   sources['cat/narezany/margyt/Motion.java']=(ROOT/'inject/java/cat/narezany/margyt/Motion.java').read_text(encoding='utf-8')
-   sources['cat/narezany/margyt/MotionHarness.java']=HARNESS
+   sources['cat/narezany/tokkiyou/Motion.java']=(ROOT/'inject/java/cat/narezany/tokkiyou/Motion.java').read_text(encoding='utf-8')
+   sources['cat/narezany/tokkiyou/MotionHarness.java']=HARNESS
    __import__("android_doubles").with_mod(sources)
    for name,value in sources.items():
     target=work/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(value,encoding='utf-8')
    built=subprocess.run(['javac','-source','8','-target','8','-encoding','UTF-8','-d',str(work)]+[str(work/name) for name in sources],capture_output=True,text=True)
    self.assertEqual(0,built.returncode,built.stderr)
-   run=subprocess.run(['java','-cp',str(work),'cat.narezany.margyt.MotionHarness'],capture_output=True,text=True)
+   run=subprocess.run(['java','-cp',str(work),'cat.narezany.tokkiyou.MotionHarness'],capture_output=True,text=True)
    self.assertEqual(0,run.returncode,run.stderr)

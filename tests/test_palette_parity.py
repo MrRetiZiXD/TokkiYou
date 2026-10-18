@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from margyt.palette import map_colour
+from tokkiyou.palette import map_colour
 from test_secondary_accent_runtime import COLOR
 
 
@@ -21,10 +21,10 @@ class PaletteParity(unittest.TestCase):
             root = Path(temp)
             files = {
                 "android/graphics/Color.java": COLOR,
-                "cat/narezany/margyt/Palette.java": (
-                    ROOT / "inject/java/cat/narezany/margyt/Palette.java"
+                "cat/narezany/tokkiyou/Palette.java": (
+                    ROOT / "inject/java/cat/narezany/tokkiyou/Palette.java"
                 ).read_text(encoding="utf-8"),
-                "Test.java": """import cat.narezany.margyt.Palette;
+                "Test.java": """import cat.narezany.tokkiyou.Palette;
 public class Test {public static void main(String[] a){
 int[] colours={0xFFFE2C55,0x80F343C9,0xFFFF365A,0xFF808080};
 int[] accents={0xFF19B7D4,0xFF7A4BC8,0xFFFFA726,0xFF14D081};

@@ -6,18 +6,18 @@ STUBS=dict(BASE)
 STUBS['android/view/ViewTreeObserver.java']='package android.view;public class ViewTreeObserver {public OnPreDrawListener draw;public interface OnPreDrawListener {boolean onPreDraw();}public boolean isAlive(){return true;}public void addOnPreDrawListener(OnPreDrawListener l){draw=l;}public void removeOnPreDrawListener(OnPreDrawListener l){if(draw==l)draw=null;}}'
 STUBS['android/view/View.java']=STUBS['android/view/View.java'].replace('public static final int VISIBLE=0;', 'public static final int VISIBLE=0,IMPORTANT_FOR_ACCESSIBILITY_NO=2;public void post(Runnable r){r.run();}')
 STUBS['android/widget/TextView.java']=STUBS['android/widget/TextView.java'].replace('public void setTextColor(int c)', 'public void setShadowLayer(float a,float b,float c,int d){}public void setTextColor(int c)')
-STUBS['cat/narezany/margyt/Dates.java']='package cat.narezany.margyt;class Dates {static boolean enabled=true;static boolean isEnabled(){return enabled;}}'
-STUBS['cat/narezany/margyt/DateInfo.java']='package cat.narezany.margyt;class DateInfo{static void open(android.view.View r,android.view.View c){}}'
-STUBS['cat/narezany/margyt/Fonts.java']='package cat.narezany.margyt;class Fonts {static void apply(android.widget.TextView v){}}'
+STUBS['cat/narezany/tokkiyou/Dates.java']='package cat.narezany.tokkiyou;class Dates {static boolean enabled=true;static boolean isEnabled(){return enabled;}}'
+STUBS['cat/narezany/tokkiyou/DateInfo.java']='package cat.narezany.tokkiyou;class DateInfo{static void open(android.view.View r,android.view.View c){}}'
+STUBS['cat/narezany/tokkiyou/Fonts.java']='package cat.narezany.tokkiyou;class Fonts {static void apply(android.widget.TextView v){}}'
 STUBS['android/view/View.java']=STUBS['android/view/View.java'].replace('public void post(Runnable r)', 'public boolean focused=true;public boolean hasWindowFocus(){return focused;}public void post(Runnable r)')
 STUBS['android/os/SystemClock.java']='package android.os;public class SystemClock{public static long now=10000;public static long uptimeMillis(){return now;}}'
-STUBS['cat/narezany/margyt/Dim.java']='package cat.narezany.margyt;class Dim {static boolean panel;static boolean panelOpen(android.view.View root){return panel;}static boolean panelContent(android.view.View v){return false;}}'
+STUBS['cat/narezany/tokkiyou/Dim.java']='package cat.narezany.tokkiyou;class Dim {static boolean panel;static boolean panelOpen(android.view.View root){return panel;}static boolean panelContent(android.view.View v){return false;}}'
 STUBS['android/view/View.java']=STUBS['android/view/View.java'].replace('public class View implements ViewParent {','public class View implements ViewParent {public View nativeDate;public View findViewById(int id){return id==0x7f0a93a5?nativeDate:null;}').replace('public void setAlpha(float v){}','public void setAlpha(float v){alpha=v;}')
 STUBS['android/widget/TextView.java']=STUBS['android/widget/TextView.java'].replace('public void setText(String s)', 'public void setText(CharSequence s){text=s==null?null:s.toString();}public void setText(String s)')
 STUBS['android/view/View.java']=STUBS['android/view/View.java'].replace('public class View implements ViewParent {','public class View implements ViewParent {public boolean clipped;public boolean getGlobalVisibleRect(android.graphics.Rect r){r.left=left;r.top=top;r.right=left+width;r.bottom=top+height;return !clipped&&isShown()&&isAttachedToWindow();}public int pl,pt,pr,pb;public int getPaddingLeft(){return pl;}public int getPaddingTop(){return pt;}public int getPaddingRight(){return pr;}public int getPaddingBottom(){return pb;}public void setPadding(int a,int b,int c,int d){pl=a;pt=b;pr=c;pb=d;}')
 STUBS['android/graphics/Rect.java']='package android.graphics;public class Rect{public int left,top,right,bottom;public int width(){return right-left;}public int height(){return bottom-top;}}'
-STUBS['cat/narezany/margyt/Skin.java']='package cat.narezany.margyt;class Skin{int text=0xffffff;static Skin remembered(android.content.Context c){return new Skin();}}'
-HARNESS='''package cat.narezany.margyt;import android.view.*;import android.widget.*;
+STUBS['cat/narezany/tokkiyou/Skin.java']='package cat.narezany.tokkiyou;class Skin{int text=0xffffff;static Skin remembered(android.content.Context c){return new Skin();}}'
+HARNESS='''package cat.narezany.tokkiyou;import android.view.*;import android.widget.*;
 public class DateHarness {
  static void check(boolean value,String message){if(!value)throw new AssertionError(message);}
  public static void main(String[] args){
@@ -47,12 +47,12 @@ class DateOverlayRuntimeTest(unittest.TestCase):
  def test_visible_caption_date(self):
   with tempfile.TemporaryDirectory() as directory:
    work=pathlib.Path(directory);sources=dict(STUBS)
-   sources['cat/narezany/margyt/DateOverlay.java']=(ROOT/'inject/java/cat/narezany/margyt/DateOverlay.java').read_text(encoding='utf-8')
-   sources['cat/narezany/margyt/DateHarness.java']=HARNESS
+   sources['cat/narezany/tokkiyou/DateOverlay.java']=(ROOT/'inject/java/cat/narezany/tokkiyou/DateOverlay.java').read_text(encoding='utf-8')
+   sources['cat/narezany/tokkiyou/DateHarness.java']=HARNESS
    __import__("android_doubles").with_mod(sources)
    for name,content in sources.items():
     target=work/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(content,encoding='utf-8')
    built=subprocess.run(['javac','-source','8','-target','8','-encoding','UTF-8','-d',str(work)]+[str(work/name) for name in sources],capture_output=True,text=True)
    self.assertEqual(0,built.returncode,built.stderr)
-   run=subprocess.run(['java','-cp',str(work),'cat.narezany.margyt.DateHarness'],capture_output=True,text=True)
+   run=subprocess.run(['java','-cp',str(work),'cat.narezany.tokkiyou.DateHarness'],capture_output=True,text=True)
    self.assertEqual(0,run.returncode,run.stderr)

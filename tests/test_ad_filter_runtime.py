@@ -8,11 +8,11 @@ class AdFilterTest(unittest.TestCase):
  def test_filter_preserves_organic_posts_and_native_list(self):
   body='\n'.join(method('Feed.java',m) for m in ['    static boolean advert','    public static List withoutAds','    public static List searchItems'])
   sources={
-   'cat/narezany/margyt/NativeRead.java':(ROOT/'inject/java/cat/narezany/margyt/NativeRead.java').read_text(encoding='utf-8'),
+   'cat/narezany/tokkiyou/NativeRead.java':(ROOT/'inject/java/cat/narezany/tokkiyou/NativeRead.java').read_text(encoding='utf-8'),
    'com/ss/android/ugc/aweme/feed/model/Aweme.java':'package com.ss.android.ugc.aweme.feed.model;public class Aweme{public boolean _isAd;public Object raw;public boolean isAd(){return _isAd&&raw!=null;}}',
    'com/ss/android/ugc/aweme/search/pages/result/topsearch/core/model/SearchMixFeedList.java':(ROOT/'inject/stubs/com/ss/android/ugc/aweme/search/pages/result/topsearch/core/model/SearchMixFeedList.java').read_text(),
-   'cat/narezany/margyt/Diary.java':'package cat.narezany.margyt;class Diary{static java.util.List<String> said=new java.util.ArrayList<>();static void note(String line){said.add(line);}}',
-   'cat/narezany/margyt/Test.java':'''package cat.narezany.margyt;
+   'cat/narezany/tokkiyou/Diary.java':'package cat.narezany.tokkiyou;class Diary{static java.util.List<String> said=new java.util.ArrayList<>();static void note(String line){said.add(line);}}',
+   'cat/narezany/tokkiyou/Test.java':'''package cat.narezany.tokkiyou;
 import java.util.*;import com.ss.android.ugc.aweme.feed.model.Aweme;
 public class Test {static boolean enabled=true;static boolean isEnabled(){return enabled;}
 '''+body+'''
@@ -37,4 +37,4 @@ public static void main(String[] a){
    for name,source in sources.items():
     p=pathlib.Path(folder)/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(source,encoding='utf-8');files.append(str(p))
    result=subprocess.run(['javac','-encoding','UTF-8','-d',folder,*files],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
-   result=subprocess.run(['java','-cp',folder,'cat.narezany.margyt.Test'],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
+   result=subprocess.run(['java','-cp',folder,'cat.narezany.tokkiyou.Test'],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)

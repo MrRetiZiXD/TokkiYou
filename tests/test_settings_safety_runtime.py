@@ -2,7 +2,7 @@
 import pathlib, shutil, subprocess, tempfile, unittest
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 def method(file, marker):
- s=(ROOT/'inject/java/cat/narezany/margyt'/file).read_text(encoding='utf-8');start=s.index(marker);a=s.index('{',start);n=1;i=a+1
+ s=(ROOT/'inject/java/cat/narezany/tokkiyou'/file).read_text(encoding='utf-8');start=s.index(marker);a=s.index('{',start);n=1;i=a+1
  while n:
   n += (s[i]=='{')-(s[i]=='}');i+=1
  return s[start:i]
@@ -13,7 +13,7 @@ class SafetyRuntimeTest(unittest.TestCase):
   slider=method('Expressive.java','    static void slider')
   self.assertNotIn('getProgressDrawable',slider);self.assertNotIn('getThumb',slider)
   self.assertIn('bar.setProgressDrawable(layers)',slider);self.assertIn('bar.setThumb(handle)',slider)
-  settings=(ROOT/'inject/java/cat/narezany/margyt/SettingsActivity.java').read_text(encoding='utf-8')
+  settings=(ROOT/'inject/java/cat/narezany/tokkiyou/SettingsActivity.java').read_text(encoding='utf-8')
   self.assertNotIn('tintSlider',settings);self.assertIn('Expressive.slider(bar',settings)
  @unittest.skipUnless(shutil.which('javac') and shutil.which('java'),'JDK required')
  def test_sticker_sender_only_populates_native_arguments(self):

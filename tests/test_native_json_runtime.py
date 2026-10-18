@@ -14,11 +14,11 @@ class NativeJsonRuntimeTest(unittest.TestCase):
       public Object unrelated(String value,java.lang.reflect.Type type){throw new AssertionError("wrong overload");}
       public String unrelated(Object value,java.lang.reflect.Type type){throw new AssertionError("wrong overload");}
      }'''.replace('ENCODE',encode).replace('DECODE',decode)
-    native=(ROOT/'inject/java/cat/narezany/margyt/NativeBio.java').read_text(encoding='utf-8')
+    native=(ROOT/'inject/java/cat/narezany/tokkiyou/NativeBio.java').read_text(encoding='utf-8')
     native=native[:native.index('    static boolean available()')]+'}'
     sources={
-     'cat/narezany/margyt/NativeJson.java':(ROOT/'inject/java/cat/narezany/margyt/NativeJson.java').read_text(encoding='utf-8'),
-     'cat/narezany/margyt/NativeBio.java':native,
+     'cat/narezany/tokkiyou/NativeJson.java':(ROOT/'inject/java/cat/narezany/tokkiyou/NativeJson.java').read_text(encoding='utf-8'),
+     'cat/narezany/tokkiyou/NativeBio.java':native,
      'android/os/Handler.java':'package android.os;public class Handler{}',
      'android/os/Looper.java':'package android.os;public class Looper{}',
      'android/os/Message.java':'package android.os;public class Message{}',
@@ -29,8 +29,8 @@ class NativeJsonRuntimeTest(unittest.TestCase):
     # Obfuscated class names beginning with digits are valid DEX but not Java.
     # Override only the service locator; execute actual extras()/decodeExtras().
     sources.pop('X/14EI.java')
-    sources['cat/narezany/margyt/NativeBio.java']=native.replace('return Class.forName("X.14EI").getMethod("LJFF").invoke(null);','return new NativeJsonHarness.Service();')
-    sources['cat/narezany/margyt/NativeJsonHarness.java']=r'''package cat.narezany.margyt;
+    sources['cat/narezany/tokkiyou/NativeBio.java']=native.replace('return Class.forName("X.14EI").getMethod("LJFF").invoke(null);','return new NativeJsonHarness.Service();')
+    sources['cat/narezany/tokkiyou/NativeJsonHarness.java']=r'''package cat.narezany.tokkiyou;
       public class NativeJsonHarness {
        public static class Service {public User getCurUser(){return new User();}}
        public static class User {public String getUid(){return "123";}public String getSignatureExtra(){return "[{\"text\":\"@friend\",\"start\":2,\"end\":9}]";}}
@@ -51,5 +51,5 @@ class NativeJsonRuntimeTest(unittest.TestCase):
      file=work/name;file.parent.mkdir(parents=True,exist_ok=True);file.write_text(source,encoding='utf-8')
     result=subprocess.run(['javac','-source','8','-target','8','-encoding','UTF-8','-d',directory]+[str(work/name) for name in sources],capture_output=True,text=True)
     self.assertEqual(0,result.returncode,result.stderr)
-    result=subprocess.run(['java','-cp',directory,'cat.narezany.margyt.NativeJsonHarness'],capture_output=True,text=True)
+    result=subprocess.run(['java','-cp',directory,'cat.narezany.tokkiyou.NativeJsonHarness'],capture_output=True,text=True)
     self.assertEqual(0,result.returncode,result.stderr)

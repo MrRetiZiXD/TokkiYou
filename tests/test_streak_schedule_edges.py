@@ -4,7 +4,7 @@ import test_account_appearance_runtime as base
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 def method(file,signature):
  """The body of one method, so that the time arithmetic can be run alone."""
- text=(ROOT/'inject/java/cat/narezany/margyt'/file).read_text(encoding='utf-8');a=text.index(signature);b=text.index('{',a);depth=1;i=b+1
+ text=(ROOT/'inject/java/cat/narezany/tokkiyou'/file).read_text(encoding='utf-8');a=text.index(signature);b=text.index('{',a);depth=1;i=b+1
  while depth:
   if text[i]=='{':depth+=1
   if text[i]=='}':depth-=1
@@ -17,26 +17,26 @@ class ScheduleTest(unittest.TestCase):
   # The real arithmetic, lifted out of the class that also draws the picker:
   # the schedule a device reads is minutes since midnight in the preferences
   # the settings write, and every branch around that is what is under test.
-  sources['cat/narezany/margyt/StreakSchedule.java']='package cat.narezany.margyt;import java.util.Calendar;class StreakSchedule{'
-  sources['cat/narezany/margyt/StreakSchedule.java']+=('static final String KEY="streak_send_minute";'
-   +method('StreakSchedule.java','static int minute()').replace('AccountAppearance.prefs(Margy.context())','Margy.prefs()')
+  sources['cat/narezany/tokkiyou/StreakSchedule.java']='package cat.narezany.tokkiyou;import java.util.Calendar;class StreakSchedule{'
+  sources['cat/narezany/tokkiyou/StreakSchedule.java']+=('static final String KEY="streak_send_minute";'
+   +method('StreakSchedule.java','static int minute()').replace('AccountAppearance.prefs(TokkiYou.context())','TokkiYou.prefs()')
    +method('StreakSchedule.java','static boolean due(')
    +method('StreakSchedule.java','static long delay(')
    +method('StreakSchedule.java','static long next(')
    +method('StreakSchedule.java','static boolean sameDay(')
    +method('StreakSchedule.java','static int parse(')
-   +method('StreakSchedule.java','static void set(').replace('static void set(int minute)','static void store(int minute)').replace('AccountAppearance.prefs(Margy.context())','Margy.prefs()').replace('android.content.Context c=Margy.context();if(c!=null){StreakAlarm.schedule(c,false);Streaks.round(c);}','')
+   +method('StreakSchedule.java','static void set(').replace('static void set(int minute)','static void store(int minute)').replace('AccountAppearance.prefs(TokkiYou.context())','TokkiYou.prefs()').replace('android.content.Context c=TokkiYou.context();if(c!=null){StreakAlarm.schedule(c,false);Streaks.round(c);}','')
    +'}')
-  sources['cat/narezany/margyt/Margy.java']='package cat.narezany.margyt;class Margy{static String PREFS="ttcuz";static android.content.Context ctx;static android.content.Context context(){return ctx;}static android.content.SharedPreferences p;static android.content.SharedPreferences prefs(){if(p==null)p=ctx.getSharedPreferences(PREFS,0);return p;}}'
-  sources['cat/narezany/margyt/Test.java']=HARNESS
+  sources['cat/narezany/tokkiyou/TokkiYou.java']='package cat.narezany.tokkiyou;class TokkiYou{static String PREFS="ttcuz";static android.content.Context ctx;static android.content.Context context(){return ctx;}static android.content.SharedPreferences p;static android.content.SharedPreferences prefs(){if(p==null)p=ctx.getSharedPreferences(PREFS,0);return p;}}'
+  sources['cat/narezany/tokkiyou/Test.java']=HARNESS
   with tempfile.TemporaryDirectory() as directory:
    work=pathlib.Path(directory)
    for name,source in sources.items():p=work/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(source,encoding='utf-8')
    result=subprocess.run(['javac','-encoding','UTF-8','-source','8','-target','8','-d',str(work)]+[str(p) for p in work.rglob('*.java')],capture_output=True,text=True)
    self.assertEqual(0,result.returncode,result.stderr)
-   result=subprocess.run(['java','-cp',str(work),'cat.narezany.margyt.Test'],capture_output=True,text=True)
+   result=subprocess.run(['java','-cp',str(work),'cat.narezany.tokkiyou.Test'],capture_output=True,text=True)
    self.assertEqual(0,result.returncode,result.stderr+result.stdout)
-HARNESS=r'''package cat.narezany.margyt;import java.util.*;
+HARNESS=r'''package cat.narezany.tokkiyou;import java.util.*;
 public class Test{
  static void check(boolean ok,String what){if(!ok)throw new AssertionError(what);}
  static long at(int year,int month,int day,int hour,int minute){
@@ -46,7 +46,7 @@ public class Test{
  }
  public static void main(String[] args)throws Exception{
   android.content.Context context=new android.content.Context();
-  Margy.ctx=context;
+  TokkiYou.ctx=context;
   long cadence=15*60*1000L;
 
   // 20:30 chosen, and it is 18:00: today's 20:30, not in fifteen minutes.

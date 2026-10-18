@@ -84,7 +84,7 @@ about a plugin is what the phone will load.
 
 ## The bot
 
-`@margy_robot`, by long polling: no certificate, no port, nothing to expose. It
+`@tokkiyou_robot`, by long polling: no certificate, no port, nothing to expose. It
 does two things.
 
     профиль <ник в тиктоке или айди>    the name, the picture and the badges
@@ -129,9 +129,9 @@ answer in other chats; nothing here can do that.
 
 ## Running it
 
-    systemctl status margyt-badges margyt-bot
-    journalctl -u margyt-badges -f
-    journalctl -u margyt-bot -f
+    systemctl status tokkiyou-badges tokkiyou-bot
+    journalctl -u tokkiyou-badges -f
+    journalctl -u tokkiyou-bot -f
 
     badgectl list
     badgectl grant supporter 7551880794956989495

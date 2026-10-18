@@ -1,10 +1,10 @@
 """Run production URL selection, file detection, pin ordering and timestamp/speed bounds."""
 import pathlib,shutil,subprocess,tempfile,unittest
 import test_account_appearance_runtime as base
-from margyt import dexpatch
+from tokkiyou import dexpatch
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 def method(file,signature):
- text=(ROOT/'inject/java/cat/narezany/margyt'/file).read_text(encoding='utf-8');a=text.index(signature);b=text.index('{',a);depth=1;i=b+1
+ text=(ROOT/'inject/java/cat/narezany/tokkiyou'/file).read_text(encoding='utf-8');a=text.index(signature);b=text.index('{',a);depth=1;i=b+1
  while depth:
   if text[i]=='{':depth+=1
   if text[i]=='}':depth-=1
@@ -14,20 +14,20 @@ class ArchiveFeaturesTest(unittest.TestCase):
  @unittest.skipUnless(shutil.which('javac') and shutil.which('java'),'JDK required')
  def test_real_models_and_formats(self):
   sources={k:base.STUBS[k] for k in ['android/content/Context.java','android/content/SharedPreferences.java']}
-  sources.update({'cat/narezany/margyt/Margy.java':'package cat.narezany.margyt;class Margy{static android.content.Context c=new android.content.Context();static android.content.Context context(){return c;}}',
- 'cat/narezany/margyt/AccountAppearance.java':'package cat.narezany.margyt;class AccountAppearance{static String account="111";static android.content.SharedPreferences prefs(android.content.Context c){return c.getSharedPreferences(account,0);}}'})
+  sources.update({'cat/narezany/tokkiyou/TokkiYou.java':'package cat.narezany.tokkiyou;class TokkiYou{static android.content.Context c=new android.content.Context();static android.content.Context context(){return c;}}',
+ 'cat/narezany/tokkiyou/AccountAppearance.java':'package cat.narezany.tokkiyou;class AccountAppearance{static String account="111";static android.content.SharedPreferences prefs(android.content.Context c){return c.getSharedPreferences(account,0);}}'})
   for name in ['NativeRead','DownloadQuality']:
-   sources['cat/narezany/margyt/'+name+'.java']=(ROOT/'inject/java/cat/narezany/margyt'/(name+'.java')).read_text(encoding='utf-8')
-  helpers='package cat.narezany.margyt;import java.util.*;class Algorithms{static final int LIMIT=20;'+method('PinnedFriends.java','static List<String> parse(')+method('PinnedFriends.java','static List order(')+method('PlayerTools.java','static float percent(')+method('PlayerTools.java','static boolean validSpeed(')+method('MessageTimes.java','static long millis(')+'}'
-  sources['cat/narezany/margyt/Algorithms.java']=helpers
-  sources['cat/narezany/margyt/Test.java']=HARNESS
+   sources['cat/narezany/tokkiyou/'+name+'.java']=(ROOT/'inject/java/cat/narezany/tokkiyou'/(name+'.java')).read_text(encoding='utf-8')
+  helpers='package cat.narezany.tokkiyou;import java.util.*;class Algorithms{static final int LIMIT=20;'+method('PinnedFriends.java','static List<String> parse(')+method('PinnedFriends.java','static List order(')+method('PlayerTools.java','static float percent(')+method('PlayerTools.java','static boolean validSpeed(')+method('MessageTimes.java','static long millis(')+'}'
+  sources['cat/narezany/tokkiyou/Algorithms.java']=helpers
+  sources['cat/narezany/tokkiyou/Test.java']=HARNESS
   with tempfile.TemporaryDirectory() as directory:
    work=pathlib.Path(directory)
    __import__("android_doubles").with_mod(sources)
    for name,source in sources.items():p=work/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(source,encoding='utf-8')
    result=subprocess.run(['javac','-encoding','UTF-8','-source','8','-target','8','-d',str(work)]+[str(p) for p in work.rglob('*.java')],capture_output=True,text=True)
    self.assertEqual(0,result.returncode,result.stderr)
-   result=subprocess.run(['java','-cp',str(work),'cat.narezany.margyt.Test',str(work)],capture_output=True,text=True)
+   result=subprocess.run(['java','-cp',str(work),'cat.narezany.tokkiyou.Test',str(work)],capture_output=True,text=True)
    self.assertEqual(0,result.returncode,result.stderr)
  def test_verified_hooks_are_scoped_and_idempotent(self):
   with tempfile.TemporaryDirectory() as directory:
@@ -41,7 +41,7 @@ class ArchiveFeaturesTest(unittest.TestCase):
    self.assertEqual({},dexpatch.rewrite_anchored(str(root)))
    unrelated=root/'chat.smali';original='.class public Lexample/Chat;\n.method public onViewCreated(Landroid/view/View;)V\n.registers 2\nreturn-void\n.end method';unrelated.write_text(original)
    dexpatch.rewrite_anchored(str(root));self.assertEqual(original,unrelated.read_text())
-HARNESS=r'''package cat.narezany.margyt;import java.util.*;import java.io.*;
+HARNESS=r'''package cat.narezany.tokkiyou;import java.util.*;import java.io.*;
 public class Test{
 static void check(boolean b,String s){if(!b)throw new AssertionError(s);}
 public static class Url{List<String> list;Url(String...s){list=Arrays.asList(s);}public List getUrlList(){return list;}}

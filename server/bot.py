@@ -38,7 +38,7 @@ import tiktok
 TOKEN_FILE = os.path.join(HERE, "bot.txt")
 
 #: where the badge service answers, for the avatar it passes on
-SITE = "https://margy.narez.xyz"
+SITE = "https://tokkiyou.narez.xyz"
 
 #: who receives an icon somebody offers
 OWNER = 7826361017
@@ -338,7 +338,7 @@ def call(what, **fields):
 def upload(what, field, name, blob, **fields):
     """A method call carrying a file, as multipart -- the only way to hand
     Telegram bytes rather than an address it has to fetch itself."""
-    line = "----margyt%d" % time.time_ns()
+    line = "----tokkiyou%d" % time.time_ns()
     body = bytearray()
     for key, value in fields.items():
         body += ("--%s\r\nContent-Disposition: form-data; name=\"%s\"\r\n\r\n%s\r\n"
@@ -477,7 +477,7 @@ def handle(update):
         code = text.split("p_", 1)[1].strip()
         name = from_who.get("first_name") or from_who.get("username") or ""
         if from_who.get("id") and patcher.claim(code, from_who["id"], name):
-            return say(chat, "Готово. Возвращайся в <b>Margy Patcher</b>.")
+            return say(chat, "Готово. Возвращайся в <b>TokkiYou Patcher</b>.")
         return say(chat, "Этот вход уже не действует. Нажми «Войти через Telegram» "
                          "в патчере ещё раз.")
 
@@ -496,7 +496,7 @@ def handle(update):
         return say(chat, "Запомнил: это группа поддержавших.")
 
     if low in ("/start", "/help", "помощь"):
-        me = call("getMe").get("result", {}).get("username", "margyt_bot")
+        me = call("getMe").get("result", {}).get("username", "tokkiyou_bot")
         return say(chat, HELP % me)
 
     # One name to ask about, and it is the TikTok one. A telegram name is a

@@ -22,7 +22,7 @@ def dex(owner='Ljava/lang/String;',method='valueOf',literal='',source=None,defin
     data[12:32]=hashlib.sha1(data[32:]).digest();struct.pack_into('<I',data,8,zlib.adler32(data[12:])&0xffffffff)
     return data
 
-HARNESS=r'''package cat.narezany.margyt;
+HARNESS=r'''package cat.narezany.tokkiyou;
 import java.io.*;import java.util.zip.*;
 class AuditHarness {
  static void check(boolean value,String why){if(!value)throw new AssertionError(why);}
@@ -55,20 +55,20 @@ class PluginAuditRuntimeTest(unittest.TestCase):
  @unittest.skipUnless(shutil.which('javac') and shutil.which('java'),'JDK required')
  def test_inspector_archive_and_catalog_boundaries(self):
   with tempfile.TemporaryDirectory() as directory:
-   work=pathlib.Path(directory);base=ROOT/'inject/java/cat/narezany/margyt'
-   sources={f'cat/narezany/margyt/{name}.java':(base/f'{name}.java').read_text(encoding='utf-8') for name in ('PluginAudit','PluginPackage','PluginCatalog')}
-   sources.update({'cat/narezany/margyt/AuditHarness.java':HARNESS,
+   work=pathlib.Path(directory);base=ROOT/'inject/java/cat/narezany/tokkiyou'
+   sources={f'cat/narezany/tokkiyou/{name}.java':(base/f'{name}.java').read_text(encoding='utf-8') for name in ('PluginAudit','PluginPackage','PluginCatalog')}
+   sources.update({'cat/narezany/tokkiyou/AuditHarness.java':HARNESS,
     'android/content/Context.java':'package android.content;public class Context {public SharedPreferences getSharedPreferences(String n,int m){return null;}}',
     'android/content/SharedPreferences.java':'package android.content;public interface SharedPreferences {String getString(String k,String d);boolean getBoolean(String k,boolean d);boolean contains(String k);Editor edit();interface Editor {Editor putString(String k,String v);Editor putBoolean(String k,boolean v);void apply();}}',
-    'cat/narezany/margyt/Text.java':'package cat.narezany.margyt;final class Text{static final String PLUGIN_AUDIT_HEAD="What the plugin\'s code does:",PLUGIN_AUDIT_CLEAN="Nothing.",PLUGIN_AUDIT_NOTE="Runs as TikTok.";}',
-    'cat/narezany/margyt/Badges.java':'package cat.narezany.margyt;final class Badges {static final String SERVER="https://example.com/api";} '})
+    'cat/narezany/tokkiyou/Text.java':'package cat.narezany.tokkiyou;final class Text{static final String PLUGIN_AUDIT_HEAD="What the plugin\'s code does:",PLUGIN_AUDIT_CLEAN="Nothing.",PLUGIN_AUDIT_NOTE="Runs as TikTok.";}',
+    'cat/narezany/tokkiyou/Badges.java':'package cat.narezany.tokkiyou;final class Badges {static final String SERVER="https://example.com/api";} '})
    __import__("android_doubles").with_mod(sources)
    for name,code in sources.items():p=work/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(code,encoding='utf-8')
    built=subprocess.run(['javac','-source','8','-target','8','-encoding','UTF-8','-d',directory]+[str(work/name) for name in sources],capture_output=True,text=True);self.assertEqual(0,built.returncode,built.stderr)
-   cases=[dex(literal='Runtime.exec is documentation'),dex('Ljava/lang/Runtime;','exec'),dex('Ldalvik/system/DexClassLoader;','loadClass'),dex('Ljava/net/URL;','openConnection'),dex('Ljava/lang/reflect/Method;','invoke'),dex('Lcat/narezany/margyt/plugin/PluginContext;','fetch')]
+   cases=[dex(literal='Runtime.exec is documentation'),dex('Ljava/lang/Runtime;','exec'),dex('Ldalvik/system/DexClassLoader;','loadClass'),dex('Ljava/net/URL;','openConnection'),dex('Ljava/lang/reflect/Method;','invoke'),dex('Lcat/narezany/tokkiyou/plugin/PluginContext;','fetch')]
    paths=[]
    for i,data in enumerate(cases):p=work/f'{i}.dex';p.write_bytes(data);paths.append(str(p))
    extra_cases=[dex('Lsample/DemoPlugin;','onStart',source='DemoPlugin.java',define=True),dex('Lsample/a;','onStart',source='DemoPlugin.java',define=True),dex('Lsample/DemoPlugin;','onStart',define=True),dex('Lsample/DemoPlugin;','a',source='DemoPlugin.java',define=True),dex('Lsample/DemoPlugin;','onStart',literal='Z'*300,source='DemoPlugin.java',define=True)]
    extra_paths=[]
    for i,data in enumerate(extra_cases):p=work/f'extra{i}.dex';p.write_bytes(data);extra_paths.append(str(p))
-   run=subprocess.run(['java','-cp',directory,'cat.narezany.margyt.AuditHarness']+paths+[str(work/'archives')]+extra_paths,capture_output=True,text=True);self.assertEqual(0,run.returncode,run.stderr)
+   run=subprocess.run(['java','-cp',directory,'cat.narezany.tokkiyou.AuditHarness']+paths+[str(work/'archives')]+extra_paths,capture_output=True,text=True);self.assertEqual(0,run.returncode,run.stderr)

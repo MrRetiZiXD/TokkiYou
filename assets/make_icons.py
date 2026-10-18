@@ -99,8 +99,8 @@ def main():
     icon = artwork_image(source, (1024, 1024))
     output = ROOT / "icon_out"
     output.mkdir(parents=True, exist_ok=True)
-    icon.save(output / "margyt-1024.png", optimize=True)
-    glyph.save(output / "margyt-1024-glyph.png", optimize=True)
+    icon.save(output / "tokkiyou-1024.png", optimize=True)
+    glyph.save(output / "tokkiyou-1024-glyph.png", optimize=True)
 
     play = output / "play"
     play.mkdir(exist_ok=True)

@@ -1,7 +1,7 @@
 """Execute actual gesture thresholds independently of Android window stubs."""
 import pathlib,shutil,subprocess,tempfile,unittest
 ROOT=pathlib.Path(__file__).resolve().parents[1]
-HARNESS='''package cat.narezany.margyt;public class DragHarness {
+HARNESS='''package cat.narezany.tokkiyou;public class DragHarness {
  static void check(boolean b,String s){if(!b)throw new AssertionError(s);}
  public static void main(String[] args){SheetDrag drag=new SheetDrag();
   drag.start(100,0);check(drag.move(80,30)==0,"upward pull cannot move sheet up");check(!drag.release(400,1),"upward pull cannot close");
@@ -18,6 +18,6 @@ class SheetDragRuntimeTest(unittest.TestCase):
  @unittest.skipUnless(shutil.which('javac') and shutil.which('java'),'JDK required')
  def test_drag_thresholds(self):
   with tempfile.TemporaryDirectory() as directory:
-   p=pathlib.Path(directory);source=p/'SheetDrag.java';source.write_text((ROOT/'inject/java/cat/narezany/margyt/SheetDrag.java').read_text(),encoding='utf-8');h=p/'DragHarness.java';h.write_text(HARNESS,encoding='utf-8')
+   p=pathlib.Path(directory);source=p/'SheetDrag.java';source.write_text((ROOT/'inject/java/cat/narezany/tokkiyou/SheetDrag.java').read_text(),encoding='utf-8');h=p/'DragHarness.java';h.write_text(HARNESS,encoding='utf-8')
    run=subprocess.run(['javac','-source','8','-target','8','-d',str(p),str(source),str(h)],capture_output=True,text=True);self.assertEqual(0,run.returncode,run.stderr)
-   run=subprocess.run(['java','-cp',str(p),'cat.narezany.margyt.DragHarness'],capture_output=True,text=True);self.assertEqual(0,run.returncode,run.stderr)
+   run=subprocess.run(['java','-cp',str(p),'cat.narezany.tokkiyou.DragHarness'],capture_output=True,text=True);self.assertEqual(0,run.returncode,run.stderr)

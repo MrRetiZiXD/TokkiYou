@@ -87,7 +87,7 @@ fun HomeScreen(open: (String) -> Unit, settings: () -> Unit) {
         modifier = Modifier.nestedScroll(behaviour.nestedScrollConnection),
         topBar = {
             LargeTopAppBar(
-                title = { Text("Margy Patcher", fontWeight = FontWeight.SemiBold) },
+                title = { Text("TokkiYou Patcher", fontWeight = FontWeight.SemiBold) },
                 actions = {
                     FilledTonalIconButton(onClick = settings, modifier = Modifier.padding(end = 8.dp)) {
                         Icon(Icons.Rounded.Settings, contentDescription = words.settings)

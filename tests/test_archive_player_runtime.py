@@ -14,24 +14,24 @@ class ArchivePlayerTest(unittest.TestCase):
  'android/os/Handler.java':'package android.os;public class Handler{public static java.util.List<Runnable> queue=new java.util.ArrayList<>();public Handler(Looper l){}public void post(Runnable r){r.run();}public void postDelayed(Runnable r,long d){queue.add(r);}public void removeCallbacks(Runnable r){queue.remove(r);}public static void tick(long now){SystemClock.now=now;java.util.List<Runnable> old=new java.util.ArrayList<>(queue);queue.clear();for(Runnable r:old)r.run();}}',
  'android/text/InputType.java':'package android.text;public class InputType{public static int TYPE_CLASS_NUMBER=2,TYPE_NUMBER_FLAG_DECIMAL=8192;}',
  'android/widget/EditText.java':'package android.widget;public class EditText{String text="";public void setText(String s){text=s;}public CharSequence getText(){return text;}public void setInputType(int i){}}',
- 'cat/narezany/margyt/Margy.java':'package cat.narezany.margyt;class Margy{static android.content.Context c=new android.content.Context();static android.content.Context context(){return c;}}',
- 'cat/narezany/margyt/AccountAppearance.java':'package cat.narezany.margyt;class AccountAppearance{static String account="111";static android.content.SharedPreferences prefs(android.content.Context c){return c.getSharedPreferences(account,0);}}',
- 'cat/narezany/margyt/Diary.java':'package cat.narezany.margyt;class Diary{static void note(String s){}}',
- 'cat/narezany/margyt/Screen.java':'package cat.narezany.margyt;class Screen{static int errors;static void say(String s){errors++;}}',
- 'cat/narezany/margyt/Text.java':'package cat.narezany.margyt;class Text{static String SPEED_RANGE="",PLAYER_NOT_READY="",CUSTOM_SPEED="",PLAYER_SPEED="",APPLY="",CLOSE="";}',
- 'cat/narezany/margyt/Skin.java':'package cat.narezany.margyt;class Skin{static Skin remembered(android.content.Context c){return new Skin();}}',
- 'cat/narezany/margyt/ModDialog.java':'package cat.narezany.margyt;class ModDialog{interface Choice{void on(Object d,int i);}static class Builder{Builder(android.content.Context c){}Builder setItems(String[] s,Choice ch){return this;}void show(){}}}',
- 'cat/narezany/margyt/Panel.java':'package cat.narezany.margyt;class Panel{static Panel with(android.content.Context c,Skin s,String t){return new Panel();}android.widget.EditText field(String s){return new android.widget.EditText();}Panel primaryKeepOpen(String s,Runnable r){return this;}Panel quiet(String s,Runnable r){return this;}void show(){}void close(){}}'
+ 'cat/narezany/tokkiyou/TokkiYou.java':'package cat.narezany.tokkiyou;class TokkiYou{static android.content.Context c=new android.content.Context();static android.content.Context context(){return c;}}',
+ 'cat/narezany/tokkiyou/AccountAppearance.java':'package cat.narezany.tokkiyou;class AccountAppearance{static String account="111";static android.content.SharedPreferences prefs(android.content.Context c){return c.getSharedPreferences(account,0);}}',
+ 'cat/narezany/tokkiyou/Diary.java':'package cat.narezany.tokkiyou;class Diary{static void note(String s){}}',
+ 'cat/narezany/tokkiyou/Screen.java':'package cat.narezany.tokkiyou;class Screen{static int errors;static void say(String s){errors++;}}',
+ 'cat/narezany/tokkiyou/Text.java':'package cat.narezany.tokkiyou;class Text{static String SPEED_RANGE="",PLAYER_NOT_READY="",CUSTOM_SPEED="",PLAYER_SPEED="",APPLY="",CLOSE="";}',
+ 'cat/narezany/tokkiyou/Skin.java':'package cat.narezany.tokkiyou;class Skin{static Skin remembered(android.content.Context c){return new Skin();}}',
+ 'cat/narezany/tokkiyou/ModDialog.java':'package cat.narezany.tokkiyou;class ModDialog{interface Choice{void on(Object d,int i);}static class Builder{Builder(android.content.Context c){}Builder setItems(String[] s,Choice ch){return this;}void show(){}}}',
+ 'cat/narezany/tokkiyou/Panel.java':'package cat.narezany.tokkiyou;class Panel{static Panel with(android.content.Context c,Skin s,String t){return new Panel();}android.widget.EditText field(String s){return new android.widget.EditText();}Panel primaryKeepOpen(String s,Runnable r){return this;}Panel quiet(String s,Runnable r){return this;}void show(){}void close(){}}'
   })
-  for name in ['NativeRead','PlayerTools']:sources['cat/narezany/margyt/'+name+'.java']=(ROOT/'inject/java/cat/narezany/margyt'/(name+'.java')).read_text(encoding='utf-8')
-  sources['cat/narezany/margyt/Test.java']=HARNESS
+  for name in ['NativeRead','PlayerTools']:sources['cat/narezany/tokkiyou/'+name+'.java']=(ROOT/'inject/java/cat/narezany/tokkiyou'/(name+'.java')).read_text(encoding='utf-8')
+  sources['cat/narezany/tokkiyou/Test.java']=HARNESS
   with tempfile.TemporaryDirectory() as folder:
    root=pathlib.Path(folder)
    __import__("android_doubles").with_mod(sources)
    for name,source in sources.items():p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(source,encoding='utf-8')
    result=subprocess.run(['javac','-encoding','UTF-8','-source','8','-target','8','-d',str(root)]+[str(p) for p in root.rglob('*.java')],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
-   result=subprocess.run(['java','-cp',str(root),'cat.narezany.margyt.Test'],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
-HARNESS=r'''package cat.narezany.margyt;import java.util.*;
+   result=subprocess.run(['java','-cp',str(root),'cat.narezany.tokkiyou.Test'],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
+HARNESS=r'''package cat.narezany.tokkiyou;import java.util.*;
 public class Test{static void check(boolean b,String s){if(!b)throw new AssertionError(s);}
 public static class Post{String aid;Post(String s){aid=s;}public String getAid(){return aid;}}
 public static class Manager{float speed=1;int speedWrites;long position=45000,duration=60000;List<Float> seeks=new ArrayList<>();public void LJJIJL(float v){speed=v;speedWrites++;}public long getDuration(){return duration;}public long getCurrentPosition(){return position;}public void seek(float progress){seeks.add(progress);}}

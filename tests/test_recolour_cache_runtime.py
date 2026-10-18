@@ -30,20 +30,20 @@ public class Bitmap {public enum CompressFormat{PNG} public boolean compress(Com
             "android/graphics/BitmapFactory.java": """package android.graphics;
 public class BitmapFactory {public static Bitmap decodeByteArray(byte[] b,int o,int n){return null;}}
 """,
-            "cat/narezany/margyt/Margy.java": """package cat.narezany.margyt;
+            "cat/narezany/tokkiyou/TokkiYou.java": """package cat.narezany.tokkiyou;
 import android.content.Context; import java.io.File;
-public class Margy {static Context c;static Context context(){return c;} }
+public class TokkiYou {static Context c;static Context context(){return c;} }
 """,
-            "cat/narezany/margyt/RecolourCache.java": (
-                ROOT / "inject/java/cat/narezany/margyt/RecolourCache.java"
+            "cat/narezany/tokkiyou/RecolourCache.java": (
+                ROOT / "inject/java/cat/narezany/tokkiyou/RecolourCache.java"
             ).read_text(encoding="utf-8"),
-            "cat/narezany/margyt/Test.java": """package cat.narezany.margyt;
+            "cat/narezany/tokkiyou/Test.java": """package cat.narezany.tokkiyou;
 import java.io.File; import java.nio.charset.StandardCharsets;
 public class Test {
  static void check(boolean yes){if(!yes)throw new AssertionError();}
  static void await(String key)throws Exception{for(int n=0;n<300&&RecolourCache.get(key)==null;n++)Thread.sleep(10);check(RecolourCache.get(key)!=null);}
  public static void main(String[] args)throws Exception{
-  Margy.c=new android.content.Context(new File(args[0]));
+  TokkiYou.c=new android.content.Context(new File(args[0]));
   String a=RecolourCache.likeKey("heart",0x12AABBCC);
   check(a.equals(RecolourCache.likeKey("heart",0xFFAABBCC)));
   check(!a.equals(RecolourCache.likeKey("heart",0xFFAABBBD)));
@@ -54,13 +54,13 @@ public class Test {
   check(RecolourCache.get(first)!=null);Thread.sleep(15);
   String seventh="lottie|"+RecolourCache.likeKey("heart",6);
   RecolourCache.put(seventh,new byte[]{6});await(seventh);
-  File[] colours=new File(args[0],"margyt/recolour-cache/like").listFiles(File::isDirectory);
+  File[] colours=new File(args[0],"tokkiyou/recolour-cache/like").listFiles(File::isDirectory);
   check(colours!=null&&colours.length==6);
   check(RecolourCache.get(first)!=null);
   check(RecolourCache.get("lottie|"+RecolourCache.likeKey("heart",1))==null);
   String png="png|aabbcc|"+RecolourCache.ALGORITHM_VERSION+"|frame";
   RecolourCache.put(png,new byte[]{42});await(png);
-  check(new File(args[0],"margyt/recolour-cache/like/aabbcc").listFiles().length==2);
+  check(new File(args[0],"tokkiyou/recolour-cache/like/aabbcc").listFiles().length==2);
   RecolourCache.clear();
   for(int i=0;i<300&&RecolourCache.get(png)!=null;i++)Thread.sleep(10);
   check(RecolourCache.get(png)==null);
@@ -79,4 +79,4 @@ public class Test {
             files = [str(path) for path in (root / "src").rglob("*.java")]
             subprocess.run(["javac", "-encoding", "UTF-8", "-d", str(root / "classes"), *files], check=True)
             subprocess.run(["java", "-cp", str(root / "classes"),
-                            "cat.narezany.margyt.Test", str(root / "data")], check=True)
+                            "cat.narezany.tokkiyou.Test", str(root / "data")], check=True)

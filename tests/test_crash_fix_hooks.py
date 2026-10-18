@@ -1,6 +1,6 @@
 import os, tempfile, unittest
 
-from margyt import dexpatch
+from tokkiyou import dexpatch
 
 STARTER = (".class public Landroidx/activity/ComponentActivity;\n.super LX/1APY;\n\n"
            ".method public startActivityForResult(Landroid/content/Intent;I)V\n    .registers 3\n"
@@ -48,7 +48,7 @@ class CrashFixHookTests(unittest.TestCase):
                                  "    .registers 5\n\n%s\n    return-void\n.end method\n" % (name, call))
             dexpatch.rewrite_anchored(room)
             with open(banner, encoding="utf-8") as handle:
-                self.assertIn("invoke-static {v3, v2}, Lcat/narezany/margyt/Safely;->getString"
+                self.assertIn("invoke-static {v3, v2}, Lcat/narezany/tokkiyou/Safely;->getString"
                               "(Landroid/content/Context;I)Ljava/lang/String;", handle.read())
             # only where it crashes: everywhere else a string that is missing should be heard about
             with open(other, encoding="utf-8") as handle:

@@ -12,7 +12,7 @@ import org.json.JSONObject
  * to ask again with.
  */
 object Telegram {
-    private const val API = "https://margy.narez.xyz/api/patcher"
+    private const val API = "https://tokkiyou.narez.xyz/api/patcher"
 
     class Begun(val code: String, val link: String)
     class Who(val token: String, val name: String, val supporter: Boolean)

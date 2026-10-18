@@ -103,19 +103,19 @@ class GuardTest(unittest.TestCase):
         self.assertGreater(guard.wait("1.1.1.1", mark), 0)
 
     def test_the_mark_is_read_out_of_the_cookie_and_nothing_else_is(self):
-        self.assertEqual(guard.device("margyt=1.2; margyt_seen=" + "a" * 64), "a" * 64)
-        self.assertEqual(guard.device("margyt_seen=short"), "")
-        self.assertEqual(guard.device("margyt_seen=" + "a" * 40 + "';--"), "")
+        self.assertEqual(guard.device("tokkiyou=1.2; tokkiyou_seen=" + "a" * 64), "a" * 64)
+        self.assertEqual(guard.device("tokkiyou_seen=short"), "")
+        self.assertEqual(guard.device("tokkiyou_seen=" + "a" * 40 + "';--"), "")
         self.assertEqual(guard.device(""), "")
 
     def test_a_form_from_another_site_is_not_the_panels(self):
-        ours = {"Host": "margy.narez.xyz"}
-        self.assertTrue(guard.same_site(dict(ours, Origin="https://margy.narez.xyz")))
-        self.assertTrue(guard.same_site(dict(ours, Origin="https://margy.narez.xyz:8443")))
+        ours = {"Host": "tokkiyou.narez.xyz"}
+        self.assertTrue(guard.same_site(dict(ours, Origin="https://tokkiyou.narez.xyz")))
+        self.assertTrue(guard.same_site(dict(ours, Origin="https://tokkiyou.narez.xyz:8443")))
         self.assertTrue(guard.same_site(ours), "a tool that says nothing is not a browser")
         self.assertFalse(guard.same_site(dict(ours, Origin="https://evil.example")))
         self.assertFalse(guard.same_site(dict(ours, Origin="null")))
-        self.assertFalse(guard.same_site(dict(ours, Origin="https://margy.narez.xyz.evil.example")))
+        self.assertFalse(guard.same_site(dict(ours, Origin="https://tokkiyou.narez.xyz.evil.example")))
 
 
 if __name__ == "__main__":

@@ -112,13 +112,13 @@ def cookie(value):
     Never sent over plain http, never readable by a script on the page, and
     never sent along with a request that began on somebody else's site.
     """
-    return ("margyt=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict"
+    return ("tokkiyou=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict"
             % (value, HOURS if value else 0))
 
 
 def seen_cookie(mark):
     """What a browser keeps to be recognised by the next time it signs in."""
-    return ("margyt_seen=%s; Path=/admin; Max-Age=%d; HttpOnly; Secure; SameSite=Strict"
+    return ("tokkiyou_seen=%s; Path=/admin; Max-Age=%d; HttpOnly; Secure; SameSite=Strict"
             % (mark, 180 * 86400))
 
 
@@ -134,9 +134,9 @@ def allowed(cookie):
         return False
     for piece in cookie.split(";"):
         piece = piece.strip()
-        if not piece.startswith("margyt="):
+        if not piece.startswith("tokkiyou="):
             continue
-        value = piece[len("margyt="):]
+        value = piece[len("tokkiyou="):]
         try:
             when, mark = value.split(".", 1)
             if int(time.time()) - int(when) > HOURS:

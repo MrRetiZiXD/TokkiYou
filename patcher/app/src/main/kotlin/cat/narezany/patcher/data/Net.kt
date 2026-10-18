@@ -9,7 +9,7 @@ import java.net.URL
 /** The little of the network the app needs: a page of text, and a file with its progress. */
 object Net {
 
-    private const val AGENT = "MargyPatcher"
+    private const val AGENT = "TokkiYouPatcher"
 
     class Cancelled : IOException("cancelled")
 

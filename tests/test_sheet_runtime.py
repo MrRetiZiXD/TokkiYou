@@ -7,7 +7,7 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 STUBS = {
-    'cat/narezany/margyt/Fonts.java': 'package cat.narezany.margyt; class Fonts {static void applyTree(android.view.View v){}}',
+    'cat/narezany/tokkiyou/Fonts.java': 'package cat.narezany.tokkiyou; class Fonts {static void applyTree(android.view.View v){}}',
     'android/content/Context.java': 'package android.content; public class Context {}',
     'android/app/Activity.java': '''package android.app;
         public class Activity extends android.content.Context {
@@ -57,7 +57,7 @@ STUBS = {
         public void show(){showing=true;onStart();}
         public void dismiss(){if(showing){showing=false;dismisses++;onStop();}}
         public void cancel(){cancels++;dismiss();} }''',
-    'cat/narezany/margyt/Motion.java': '''package cat.narezany.margyt;
+    'cat/narezany/tokkiyou/Motion.java': '''package cat.narezany.tokkiyou;
         class Motion {static boolean active=true;
         static boolean enabled(android.content.Context c){return active;}
         static Runnable rise(android.view.View v){Runnable r=()->v.animate().start();v.posts.add(r);return r;} }''',
@@ -71,11 +71,11 @@ STUBS['android/widget/FrameLayout.java']='package android.widget;public class Fr
 STUBS['android/view/Gravity.java']='package android.view;public class Gravity {public static int CENTER=1;}'
 STUBS['android/view/MotionEvent.java']='package android.view;public class MotionEvent {public static final int ACTION_DOWN=0,ACTION_UP=1,ACTION_MOVE=2,ACTION_CANCEL=3;int action;float y;long time;public MotionEvent(int a,float n,long t){action=a;y=n;time=t;}public int getActionMasked(){return action;}public float getRawY(){return y;}public long getEventTime(){return time;}}'
 STUBS['android/graphics/drawable/GradientDrawable.java']='package android.graphics.drawable;public class GradientDrawable {public void setColor(int c){}public void setCornerRadius(int r){}}'
-STUBS['cat/narezany/margyt/Skin.java']='package cat.narezany.margyt;class Skin {int text=-1;static Skin remembered(android.content.Context c){return new Skin();}}'
+STUBS['cat/narezany/tokkiyou/Skin.java']='package cat.narezany.tokkiyou;class Skin {int text=-1;static Skin remembered(android.content.Context c){return new Skin();}}'
 STUBS['android/app/Dialog.java']=STUBS['android/app/Dialog.java'].replace('public void show(){','public void setCanceledOnTouchOutside(boolean allow){}public void show(){')
 STUBS['android/view/ViewPropertyAnimator.java']=STUBS['android/view/ViewPropertyAnimator.java'].replace('public Runnable end;', 'public float targetY;public Runnable end;').replace('translationY(float f){return this;}', 'translationY(float f){targetY=f;return this;}')
 STUBS['android/view/View.java']=STUBS['android/view/View.java'].replace('public float y;', 'public float y;public float getTranslationY(){return y;}')
-HARNESS = '''package cat.narezany.margyt;
+HARNESS = '''package cat.narezany.tokkiyou;
 public class SheetHarness {
     static void check(boolean v,String message){if(!v)throw new AssertionError(message);}
     public static void main(String[] args){
@@ -122,10 +122,10 @@ class SheetRuntimeTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             work = pathlib.Path(directory)
             sources = dict(STUBS)
-            sources['cat/narezany/margyt/SheetDialog.java'] = (
-                ROOT / 'inject/java/cat/narezany/margyt/SheetDialog.java').read_text(encoding='utf-8')
-            sources['cat/narezany/margyt/SheetDrag.java']=(ROOT/'inject/java/cat/narezany/margyt/SheetDrag.java').read_text()
-            sources['cat/narezany/margyt/SheetHarness.java'] = HARNESS
+            sources['cat/narezany/tokkiyou/SheetDialog.java'] = (
+                ROOT / 'inject/java/cat/narezany/tokkiyou/SheetDialog.java').read_text(encoding='utf-8')
+            sources['cat/narezany/tokkiyou/SheetDrag.java']=(ROOT/'inject/java/cat/narezany/tokkiyou/SheetDrag.java').read_text()
+            sources['cat/narezany/tokkiyou/SheetHarness.java'] = HARNESS
             __import__("android_doubles").with_mod(sources)
             for name, content in sources.items():
                 path = work / name
@@ -134,7 +134,7 @@ class SheetRuntimeTest(unittest.TestCase):
             compiled = subprocess.run(['javac', '-source', '8', '-target', '8', '-d', str(work)] +
                                       [str(work / name) for name in sources], capture_output=True, text=True)
             self.assertEqual(0, compiled.returncode, compiled.stderr)
-            result = subprocess.run(['java', '-cp', str(work), 'cat.narezany.margyt.SheetHarness'],
+            result = subprocess.run(['java', '-cp', str(work), 'cat.narezany.tokkiyou.SheetHarness'],
                                     capture_output=True, text=True)
             self.assertEqual(0, result.returncode, result.stderr)
             self.assertIn('Sheet lifecycle and interruption scenarios passed', result.stdout)

@@ -7,7 +7,7 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 STUBS = {
-    'cat/narezany/margyt/DateOverlay.java':'package cat.narezany.margyt;class DateOverlay {static void update(){}static android.view.View bound;static void register(android.view.View v,String t){}static void bind(android.view.View v,String d,String n){bound=v;}static void bind(android.view.View v,String d){bound=v;}}',
+    'cat/narezany/tokkiyou/DateOverlay.java':'package cat.narezany.tokkiyou;class DateOverlay {static void update(){}static android.view.View bound;static void register(android.view.View v,String t){}static void bind(android.view.View v,String d,String n){bound=v;}static void bind(android.view.View v,String d){bound=v;}}',
     'android/content/ClipData.java': 'package android.content; public class ClipData {public String label,body;public static ClipData newPlainText(CharSequence label,CharSequence body){ClipData result=new ClipData();result.label=label.toString();result.body=body.toString();return result;}}',
     'android/content/Context.java': '''package android.content; public class Context {
         public static int MODE_PRIVATE=0; public SharedPreferences getSharedPreferences(String n,int m){return null;} }''',
@@ -16,10 +16,10 @@ STUBS = {
     'android/view/View.java': 'package android.view; public class View {public java.util.Map<Integer,Object> tags=new java.util.HashMap<>();public Object getTag(int key){return tags.get(key);}public void setTag(int key,Object value){tags.put(key,value);}public boolean isShown(){return true;}public boolean isAttachedToWindow(){return true;}public void post(Runnable r){r.run();}}',
     'android/os/Looper.java': 'package android.os;public class Looper {public static Looper getMainLooper(){return null;}}',
     'android/os/Handler.java': 'package android.os;public class Handler {public Handler(Looper l){} public void post(Runnable r){r.run();}}',
-    'cat/narezany/margyt/NativeRead.java':'package cat.narezany.margyt;class NativeRead{static Object get(Object o,String n){try{return o.getClass().getMethod(n).invoke(o);}catch(Exception e){return null;}}static long number(Object o){return 0;}}',
-    'cat/narezany/margyt/Margy.java': '''package cat.narezany.margyt;class Margy {
+    'cat/narezany/tokkiyou/NativeRead.java':'package cat.narezany.tokkiyou;class NativeRead{static Object get(Object o,String n){try{return o.getClass().getMethod(n).invoke(o);}catch(Exception e){return null;}}static long number(Object o){return 0;}}',
+    'cat/narezany/tokkiyou/TokkiYou.java': '''package cat.narezany.tokkiyou;class TokkiYou {
         static String PREFS="mod";static android.content.Context context(){return null;} }''',
-    'cat/narezany/margyt/Diary.java': 'package cat.narezany.margyt;class Diary {static void note(String s){}}',
+    'cat/narezany/tokkiyou/Diary.java': 'package cat.narezany.tokkiyou;class Diary {static void note(String s){}}',
     'com/ss/android/ugc/aweme/comment/model/Comment.java': '''package com.ss.android.ugc.aweme.comment.model;
         public class Comment {public String body;public Comment(String b){body=b;}public String getText(){return body;} }''',
     'com/ss/android/ugc/aweme/commentv2/commentlist/powercell/BaseCommentCell.java': '''package com.ss.android.ugc.aweme.commentv2.commentlist.powercell;
@@ -27,10 +27,10 @@ STUBS = {
         public BaseCommentCell(String b){comment=new com.ss.android.ugc.aweme.comment.model.Comment(b);}
         public com.ss.android.ugc.aweme.comment.model.Comment D6(){return comment;} }''',
 }
-STUBS['cat/narezany/margyt/DateInfo.java']='package cat.narezany.margyt;class DateInfo{static final int CELL_TAG=0x7e0d0335;static class Data{static Data of(Object p){return null;}}static void open(android.view.View r,android.view.View c){}}'
-STUBS['cat/narezany/margyt/VideoActions.java']='package cat.narezany.margyt;class VideoActions{static void accountChanged(){} static void bindNative(Object c){} static void selected(Object c,Object p){}}'
-STUBS['cat/narezany/margyt/NativeRead.java']='package cat.narezany.margyt;class NativeRead {static long number(Object o){return o instanceof Number?((Number)o).longValue():0;}static Object get(Object o,String name){try{return o.getClass().getMethod(name).invoke(o);}catch(Throwable e){return null;}}static Object item(Object o){return get(o,"getItem");}static String aid(Object post){Object v=get(post,"getAid");return v instanceof String?(String)v:"";}}'
-HARNESS = '''package cat.narezany.margyt;
+STUBS['cat/narezany/tokkiyou/DateInfo.java']='package cat.narezany.tokkiyou;class DateInfo{static final int CELL_TAG=0x7e0d0335;static class Data{static Data of(Object p){return null;}}static void open(android.view.View r,android.view.View c){}}'
+STUBS['cat/narezany/tokkiyou/VideoActions.java']='package cat.narezany.tokkiyou;class VideoActions{static void accountChanged(){} static void bindNative(Object c){} static void selected(Object c,Object p){}}'
+STUBS['cat/narezany/tokkiyou/NativeRead.java']='package cat.narezany.tokkiyou;class NativeRead {static long number(Object o){return o instanceof Number?((Number)o).longValue():0;}static Object get(Object o,String name){try{return o.getClass().getMethod(name).invoke(o);}catch(Throwable e){return null;}}static Object item(Object o){return get(o,"getItem");}static String aid(Object post){Object v=get(post,"getAid");return v instanceof String?(String)v:"";}}'
+HARNESS = '''package cat.narezany.tokkiyou;
 public class FeedHarness {
     static void check(boolean v,String s){if(!v)throw new AssertionError(s);}
     public static class Bar extends android.view.View {public int type;public void setSeekBarShowType(int v){type=v;}}
@@ -83,9 +83,9 @@ class FeedFeaturesRuntimeTest(unittest.TestCase):
             work = pathlib.Path(directory)
             sources = dict(STUBS)
             for name in ('Seekbar', 'Dates', 'CommentText', 'CommentClipboard'):
-                sources['cat/narezany/margyt/'+name+'.java'] = (
-                    ROOT / ('inject/java/cat/narezany/margyt/'+name+'.java')).read_text(encoding='utf-8')
-            sources['cat/narezany/margyt/FeedHarness.java'] = HARNESS
+                sources['cat/narezany/tokkiyou/'+name+'.java'] = (
+                    ROOT / ('inject/java/cat/narezany/tokkiyou/'+name+'.java')).read_text(encoding='utf-8')
+            sources['cat/narezany/tokkiyou/FeedHarness.java'] = HARNESS
             __import__("android_doubles").with_mod(sources)
             for name, content in sources.items():
                 path = work / name
@@ -94,7 +94,7 @@ class FeedFeaturesRuntimeTest(unittest.TestCase):
             result = subprocess.run(['javac', '-source', '8', '-target', '8', '-encoding', 'UTF-8', '-d', str(work)] +
                                     [str(work/name) for name in sources], capture_output=True, text=True)
             self.assertEqual(0, result.returncode, result.stderr)
-            result = subprocess.run(['java', '-cp', str(work), 'cat.narezany.margyt.FeedHarness'],
+            result = subprocess.run(['java', '-cp', str(work), 'cat.narezany.tokkiyou.FeedHarness'],
                                     capture_output=True, text=True)
             self.assertEqual(0, result.returncode, result.stderr)
             self.assertIn('Seek modes, comment identity and publication dates passed', result.stdout)

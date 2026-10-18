@@ -95,28 +95,28 @@ STUBS = {
         public android.view.Window getWindow(){return window;}
         public boolean focused=true; public boolean hasWindowFocus(){return focused;}
         public android.content.res.Resources getResources(){return new android.content.res.Resources();} }''',
-    'cat/narezany/margyt/Margy.java': '''package cat.narezany.margyt;
-        public class Margy { public static final String PREFS="test";
+    'cat/narezany/tokkiyou/TokkiYou.java': '''package cat.narezany.tokkiyou;
+        public class TokkiYou { public static final String PREFS="test";
         public static android.content.Context context(){return null;} }''',
-    'cat/narezany/margyt/Screen.java': '''package cat.narezany.margyt;
+    'cat/narezany/tokkiyou/Screen.java': '''package cat.narezany.tokkiyou;
         public class Screen { public static android.app.Activity now(){return null;} }''',
-    'cat/narezany/margyt/Diary.java': '''package cat.narezany.margyt;
+    'cat/narezany/tokkiyou/Diary.java': '''package cat.narezany.tokkiyou;
         public class Diary { public static void note(String s){throw new AssertionError(s);} }''',
-    'cat/narezany/margyt/BurnEye.java': '''package cat.narezany.margyt;
+    'cat/narezany/tokkiyou/BurnEye.java': '''package cat.narezany.tokkiyou;
         class BurnEye { static void configurationChanged(){} static android.view.View eye;static boolean owns(android.view.View v){return v!=null && v==eye;}static boolean gone;static boolean missing(android.view.View v){return gone;}static int installs;static android.view.View install(android.view.View v){installs++;return eye;}static android.view.View installFeed(android.view.View v){return install(v);}static android.view.View installVideo(android.view.View v){return install(v);}static int inboxInstalls,hidden;static android.view.View installInbox(android.view.View v){inboxInstalls++;return install(v);}static void hide(android.view.View v){hidden++;} static void hideSoon(android.view.View v){}
         static boolean isFeedRail(android.view.View v,int depth){return true;}
         static boolean header=true;static boolean hasFeedHeader(android.view.View v){return header;} }''',
 }
 
-STUBS['cat/narezany/margyt/NavBar.java']='package cat.narezany.margyt;class NavBar{static boolean wears(android.view.View v){return false;}}'
+STUBS['cat/narezany/tokkiyou/NavBar.java']='package cat.narezany.tokkiyou;class NavBar{static boolean wears(android.view.View v){return false;}}'
 STUBS['android/os/Build.java']='package android.os;public class Build{public static class VERSION{public static int SDK_INT=34;}}'
-STUBS['cat/narezany/margyt/ProfileLayout.java']='package cat.narezany.margyt;class ProfileLayout {static boolean profile;static boolean visible(android.view.View root){return profile;}}'
+STUBS['cat/narezany/tokkiyou/ProfileLayout.java']='package cat.narezany.tokkiyou;class ProfileLayout {static boolean profile;static boolean visible(android.view.View root){return profile;}}'
 STUBS['android/view/View.java']=STUBS['android/view/View.java'].replace('public boolean isAttachedToWindow(){return true;}', 'public boolean isAttachedToWindow(){return true;}public boolean hasWindowFocus(){return true;}')
 
 from animation_doubles import STUBS as ANIMATION
 STUBS.update(ANIMATION)
-STUBS['cat/narezany/margyt/BurnEye.java']=STUBS['cat/narezany/margyt/BurnEye.java'].replace('static boolean header=true;', 'static boolean friendsHeader(android.view.View v){return false;}static boolean videoBackHeader(android.view.View v){return false;}static android.view.View installFriends(android.view.View v){return install(v);}static boolean header=true;')
-HARNESS = '''package cat.narezany.margyt;
+STUBS['cat/narezany/tokkiyou/BurnEye.java']=STUBS['cat/narezany/tokkiyou/BurnEye.java'].replace('static boolean header=true;', 'static boolean friendsHeader(android.view.View v){return false;}static boolean videoBackHeader(android.view.View v){return false;}static android.view.View installFriends(android.view.View v){return install(v);}static boolean header=true;')
+HARNESS = '''package cat.narezany.tokkiyou;
 import android.view.*;
 import java.lang.reflect.*;
 public class DimHarness {
@@ -420,12 +420,12 @@ class DimRuntimeTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             work = pathlib.Path(directory)
             sources = dict(STUBS)
-            sources['cat/narezany/margyt/Dim.java'] = (
-                ROOT / 'inject/java/cat/narezany/margyt/Dim.java').read_text(encoding='utf-8')
+            sources['cat/narezany/tokkiyou/Dim.java'] = (
+                ROOT / 'inject/java/cat/narezany/tokkiyou/Dim.java').read_text(encoding='utf-8')
             for name in ('BottomChrome',):
-                sources['cat/narezany/margyt/' + name + '.java'] = (
-                    ROOT / ('inject/java/cat/narezany/margyt/' + name + '.java')).read_text(encoding='utf-8')
-            sources['cat/narezany/margyt/DimHarness.java'] = HARNESS
+                sources['cat/narezany/tokkiyou/' + name + '.java'] = (
+                    ROOT / ('inject/java/cat/narezany/tokkiyou/' + name + '.java')).read_text(encoding='utf-8')
+            sources['cat/narezany/tokkiyou/DimHarness.java'] = HARNESS
             __import__("android_doubles").with_mod(sources)
             for name, content in sources.items():
                 path = work / name
@@ -436,7 +436,7 @@ class DimRuntimeTest(unittest.TestCase):
                                       [str(work / name) for name in sources],
                                       capture_output=True, text=True)
             self.assertEqual(0, compiled.returncode, compiled.stderr)
-            result = subprocess.run(['java', '-cp', str(work), 'cat.narezany.margyt.DimHarness'],
+            result = subprocess.run(['java', '-cp', str(work), 'cat.narezany.tokkiyou.DimHarness'],
                                     capture_output=True, text=True)
             self.assertEqual(0, result.returncode, result.stderr)
             self.assertIn('8 anti-burn runtime scenarios passed', result.stdout)

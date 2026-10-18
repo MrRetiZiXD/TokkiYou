@@ -10,15 +10,15 @@ STUBS = {
   public android.content.pm.ApplicationInfo getApplicationInfo(){return new android.content.pm.ApplicationInfo();}
   public SharedPreferences getSharedPreferences(String name,int mode){Store s=files.get(name);if(s==null){s=new Store();files.put(name,s);}return s;}
   public Store of(String name){return (Store)getSharedPreferences(name,0);}}''',
- 'cat/narezany/margyt/Margy.java': 'package cat.narezany.margyt;class Margy{static final String PREFS="margyt";}',
- 'cat/narezany/margyt/Diary.java': 'package cat.narezany.margyt;class Diary{static void note(String s){throw new AssertionError(s);}}',
- 'cat/narezany/margyt/AccountAppearance.java': 'package cat.narezany.margyt;import android.content.*;class AccountAppearance{static SharedPreferences prefs(Context c){return c.getSharedPreferences("look",0);}static String scope(Context c){return "1";}}',
+ 'cat/narezany/tokkiyou/TokkiYou.java': 'package cat.narezany.tokkiyou;class TokkiYou{static final String PREFS="tokkiyou";}',
+ 'cat/narezany/tokkiyou/Diary.java': 'package cat.narezany.tokkiyou;class Diary{static void note(String s){throw new AssertionError(s);}}',
+ 'cat/narezany/tokkiyou/AccountAppearance.java': 'package cat.narezany.tokkiyou;import android.content.*;class AccountAppearance{static SharedPreferences prefs(Context c){return c.getSharedPreferences("look",0);}static String scope(Context c){return "1";}}',
 }
-HARNESS = '''package cat.narezany.margyt;import android.content.Context;
+HARNESS = '''package cat.narezany.tokkiyou;import android.content.Context;
 public class UnsavedHarness{
  static void check(boolean ok,String what){if(!ok)throw new AssertionError(what);}
  public static void main(String[] a){
-  Context c=new Context();java.util.Map<String,Object> main=c.of("margyt").values,look=c.of("look").values;
+  Context c=new Context();java.util.Map<String,Object> main=c.of("tokkiyou").values,look=c.of("look").values;
   main.put("ads",true);main.put("visits",3);look.put("accent",7);
   Unsaved.look(c);
   // a switch that was written down: off, and on again
@@ -52,14 +52,14 @@ class UnsavedRuntimeTest(unittest.TestCase):
     def test_putting_things_back_takes_the_bar_away(self):
         with tempfile.TemporaryDirectory() as directory:
             work = pathlib.Path(directory); sources = dict(STUBS)
-            sources['cat/narezany/margyt/Unsaved.java'] = (ROOT / 'inject/java/cat/narezany/margyt/Unsaved.java').read_text(encoding='utf-8')
-            sources['cat/narezany/margyt/UnsavedHarness.java'] = HARNESS
+            sources['cat/narezany/tokkiyou/Unsaved.java'] = (ROOT / 'inject/java/cat/narezany/tokkiyou/Unsaved.java').read_text(encoding='utf-8')
+            sources['cat/narezany/tokkiyou/UnsavedHarness.java'] = HARNESS
             __import__("android_doubles").with_mod(sources)
             for name, content in sources.items():
                 target = work / name; target.parent.mkdir(parents=True, exist_ok=True); target.write_text(content, encoding='utf-8')
             built = subprocess.run(['javac', '-source', '8', '-target', '8', '-encoding', 'UTF-8', '-d', str(work)] + [str(work / name) for name in sources], capture_output=True, text=True)
             self.assertEqual(0, built.returncode, built.stderr)
-            run = subprocess.run(['java', '-cp', str(work), 'cat.narezany.margyt.UnsavedHarness'], capture_output=True, text=True)
+            run = subprocess.run(['java', '-cp', str(work), 'cat.narezany.tokkiyou.UnsavedHarness'], capture_output=True, text=True)
             self.assertEqual(0, run.returncode, run.stderr)
 
 if __name__ == '__main__':

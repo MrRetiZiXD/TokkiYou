@@ -7,7 +7,7 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from margyt import dexcache, dexpatch  # noqa: E402
+from tokkiyou import dexcache, dexpatch  # noqa: E402
 
 
 class Apart:
@@ -137,8 +137,8 @@ class DexCacheTest(unittest.TestCase):
 
     def test_how_many_at_once(self):
         self.assertEqual(dexcache.workers(1), 1)
-        os.environ["MARGYT_WORKERS"] = "3"
-        self.addCleanup(os.environ.pop, "MARGYT_WORKERS", None)
+        os.environ["TOKKIYOU_WORKERS"] = "3"
+        self.addCleanup(os.environ.pop, "TOKKIYOU_WORKERS", None)
         self.assertEqual(dexcache.workers(40), 3)
         self.assertEqual(dexcache.workers(2), 2)
 

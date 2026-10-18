@@ -2,7 +2,7 @@ import pathlib, shutil, subprocess, tempfile, unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
-HARNESS = """package cat.narezany.margyt;
+HARNESS = """package cat.narezany.tokkiyou;
 public class LagTallyHarness {
     static void check(boolean ok, String what) { if (!ok) throw new AssertionError(what); }
     public static void main(String[] args) {
@@ -49,10 +49,10 @@ class LagTallyTests(unittest.TestCase):
             (room / "LagTallyHarness.java").write_text(HARNESS, encoding="utf-8")
             built = subprocess.run(
                 ["javac", "-encoding", "UTF-8", "-d", folder,
-                 str(ROOT / "inject/java/cat/narezany/margyt/LagTally.java"),
+                 str(ROOT / "inject/java/cat/narezany/tokkiyou/LagTally.java"),
                  str(room / "LagTallyHarness.java")], capture_output=True, text=True)
             self.assertEqual(0, built.returncode, built.stderr)
-            ran = subprocess.run(["java", "-cp", folder, "cat.narezany.margyt.LagTallyHarness"],
+            ran = subprocess.run(["java", "-cp", folder, "cat.narezany.tokkiyou.LagTallyHarness"],
                                  capture_output=True, text=True)
             self.assertEqual(0, ran.returncode, ran.stderr)
 

@@ -6,9 +6,9 @@ STUBS = {
  'android/view/View.java': '''package android.view;public class View{public static java.util.ArrayDeque<Runnable> frames=new java.util.ArrayDeque<>();
   public boolean attached=true;public boolean isAttachedToWindow(){return attached;}public void postOnAnimation(Runnable r){frames.add(r);}}''',
  'android/view/ViewGroup.java': 'package android.view;public class ViewGroup extends View{public java.util.List<View> kids=new java.util.ArrayList<>();public int getChildCount(){return kids.size();}public View getChildAt(int i){return kids.get(i);}}',
- 'cat/narezany/margyt/Version.java': 'package cat.narezany.margyt;final class Version{static final boolean TEST=false;}',
+ 'cat/narezany/tokkiyou/Version.java': 'package cat.narezany.tokkiyou;final class Version{static final boolean TEST=false;}',
 }
-HARNESS = '''package cat.narezany.margyt;import android.view.*;import android.os.SystemClock;import java.util.*;
+HARNESS = '''package cat.narezany.tokkiyou;import android.view.*;import android.os.SystemClock;import java.util.*;
 public class SlicedHarness{
  static void check(boolean ok,String what){if(!ok)throw new AssertionError(what);}
  static ViewGroup tree(int wide,int deep,List<View> all){ViewGroup g=new ViewGroup();all.add(g);if(deep>0)for(int i=0;i<wide;i++)g.kids.add(tree(wide,deep-1,all));else for(int i=0;i<wide;i++){View v=new View();g.kids.add(v);all.add(v);}return g;}
@@ -45,14 +45,14 @@ class SlicedRuntimeTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             work = pathlib.Path(directory); sources = dict(STUBS)
             for name in ('Sliced', 'Probe'):
-                sources['cat/narezany/margyt/%s.java' % name] = (ROOT / 'inject/java/cat/narezany/margyt' / (name + '.java')).read_text(encoding='utf-8')
+                sources['cat/narezany/tokkiyou/%s.java' % name] = (ROOT / 'inject/java/cat/narezany/tokkiyou' / (name + '.java')).read_text(encoding='utf-8')
             sources['android/util/Log.java'] = 'package android.util;public class Log{public static int e(String t,String m){return 0;}}'
-            sources['cat/narezany/margyt/SlicedHarness.java'] = HARNESS
+            sources['cat/narezany/tokkiyou/SlicedHarness.java'] = HARNESS
             for name, content in sources.items():
                 target = work / name; target.parent.mkdir(parents=True, exist_ok=True); target.write_text(content, encoding='utf-8')
             built = subprocess.run(['javac', '-source', '8', '-target', '8', '-encoding', 'UTF-8', '-d', str(work)] + [str(work / name) for name in sources], capture_output=True, text=True)
             self.assertEqual(0, built.returncode, built.stderr)
-            run = subprocess.run(['java', '-cp', str(work), 'cat.narezany.margyt.SlicedHarness'], capture_output=True, text=True)
+            run = subprocess.run(['java', '-cp', str(work), 'cat.narezany.tokkiyou.SlicedHarness'], capture_output=True, text=True)
             self.assertEqual(0, run.returncode, run.stderr)
 
 if __name__ == '__main__':

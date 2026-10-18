@@ -2,7 +2,7 @@ import pathlib, shutil, subprocess, tempfile, unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
-HARNESS = """package cat.narezany.margyt;
+HARNESS = """package cat.narezany.tokkiyou;
 public class NavPlanHarness {
     static void check(boolean ok, String what) { if (!ok) throw new AssertionError(what); }
     static boolean near(float a, float b) { return Math.abs(a - b) < 0.01f; }
@@ -83,10 +83,10 @@ class NavPlanTests(unittest.TestCase):
             (room / "NavPlanHarness.java").write_text(HARNESS, encoding="utf-8")
             built = subprocess.run(
                 ["javac", "-encoding", "UTF-8", "-d", folder,
-                 str(ROOT / "inject/java/cat/narezany/margyt/NavPlan.java"),
+                 str(ROOT / "inject/java/cat/narezany/tokkiyou/NavPlan.java"),
                  str(room / "NavPlanHarness.java")], capture_output=True, text=True)
             self.assertEqual(0, built.returncode, built.stderr)
-            ran = subprocess.run(["java", "-cp", folder, "cat.narezany.margyt.NavPlanHarness"],
+            ran = subprocess.run(["java", "-cp", folder, "cat.narezany.tokkiyou.NavPlanHarness"],
                                  capture_output=True, text=True)
             self.assertEqual(0, ran.returncode, ran.stderr)
 

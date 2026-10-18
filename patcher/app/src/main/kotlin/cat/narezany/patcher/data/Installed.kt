@@ -25,7 +25,7 @@ sealed class Installed {
     data object Theirs : Installed()
 
     companion object {
-        private const val VERSION = "cat.narezany.margyt.version"
+        private const val VERSION = "cat.narezany.tokkiyou.version"
 
         /** [wait]: off the main thread, where reading a whole apk to know it is no trouble. */
         fun of(context: Context, mod: Mod, wait: Boolean = false): Installed {

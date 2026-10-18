@@ -3,7 +3,7 @@ import pathlib,shutil,subprocess,tempfile,unittest
 import test_account_appearance_runtime as base
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 def method(file,signature):
- text=(ROOT/'inject/java/cat/narezany/margyt'/file).read_text(encoding='utf-8');a=text.index(signature);b=text.index('{',a);depth=1;i=b+1
+ text=(ROOT/'inject/java/cat/narezany/tokkiyou'/file).read_text(encoding='utf-8');a=text.index(signature);b=text.index('{',a);depth=1;i=b+1
  while depth:
   if text[i]=='{':depth+=1
   if text[i]=='}':depth-=1
@@ -17,20 +17,20 @@ class CrashPayloadTest(unittest.TestCase):
   # and the constant it cuts against. The json library is the one android.jar
   # provides, stood in for by the smallest thing that serialises the same way.
   sources['org/json/JSONObject.java']=JSON
-  sources['cat/narezany/margyt/Reports.java']=('package cat.narezany.margyt;import org.json.*;class Reports{'
+  sources['cat/narezany/tokkiyou/Reports.java']=('package cat.narezany.tokkiyou;import org.json.*;class Reports{'
    +'private static final int PAYLOAD_LIMIT=16000;'
    # The method is private to the real class; here it is called from the harness.
    +method('CrashReports.java','private static String payload(').replace('private static String payload(','static String payload(')+'}')
-  sources['cat/narezany/margyt/Test.java']=HARNESS
+  sources['cat/narezany/tokkiyou/Test.java']=HARNESS
   with tempfile.TemporaryDirectory() as directory:
    work=pathlib.Path(directory)
    __import__("android_doubles").with_mod(sources)
    for name,source in sources.items():p=work/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(source,encoding='utf-8')
    result=subprocess.run(['javac','-encoding','UTF-8','-source','8','-target','8','-d',str(work)]+[str(p) for p in work.rglob('*.java')],capture_output=True,text=True)
    self.assertEqual(0,result.returncode,result.stderr)
-   result=subprocess.run(['java','-cp',str(work),'cat.narezany.margyt.Test'],capture_output=True,text=True)
+   result=subprocess.run(['java','-cp',str(work),'cat.narezany.tokkiyou.Test'],capture_output=True,text=True)
    self.assertEqual(0,result.returncode,result.stderr+result.stdout)
-HARNESS=r'''package cat.narezany.margyt;import org.json.*;import java.nio.charset.StandardCharsets;public class Test{
+HARNESS=r'''package cat.narezany.tokkiyou;import org.json.*;import java.nio.charset.StandardCharsets;public class Test{
  static void check(boolean ok,String what){if(!ok)throw new AssertionError(what);}
  public static void main(String[] args)throws Exception{
   String frame=" at com.ss.android.Screen.onDraw(Screen.java:42)";

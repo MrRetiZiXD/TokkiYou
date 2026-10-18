@@ -2,7 +2,7 @@ package cat.narezany.hello;
 
 import android.content.Context;
 
-import cat.narezany.margyt.plugin.MargyPlugin;
+import cat.narezany.tokkiyou.plugin.TokkiYouPlugin;
 
 /**
  * The smallest plugin that does something you can see.
@@ -13,21 +13,21 @@ import cat.narezany.margyt.plugin.MargyPlugin;
  *
  * Build it with
  *
- *     python3 -m margyt.plugin examples/hello
+ *     python3 -m tokkiyou.plugin examples/hello
  *
- * and install the .mtp through Settings and privacy -> MargyT -> Plugins.
+ * and install the .mtp through Settings and privacy -> TokkiYou -> Plugins.
  */
-public final class Hello extends MargyPlugin {
+public final class Hello extends TokkiYouPlugin {
 
     private static final String STARTS = "starts";
 
     @Override
     public void onStart(Context context) {
-        int starts = margyt().prefs().getInt(STARTS, 0) + 1;
-        margyt().prefs().edit().putInt(STARTS, starts).apply();
-        if (margyt().getBoolean("log_starts", true)) {
-            for (int i = 0; i < margyt().getInt("repeat", 1); i++)
-                margyt().log(margyt().getInt("style", 0) == 0
+        int starts = tokkiyou().prefs().getInt(STARTS, 0) + 1;
+        tokkiyou().prefs().edit().putInt(STARTS, starts).apply();
+        if (tokkiyou().getBoolean("log_starts", true)) {
+            for (int i = 0; i < tokkiyou().getInt("repeat", 1); i++)
+                tokkiyou().log(tokkiyou().getInt("style", 0) == 0
                         ? "hello #" + starts
                         : "hello -- this is start number " + starts);
         }
@@ -35,12 +35,12 @@ public final class Hello extends MargyPlugin {
         // Settings of the plugin's own (API 3): they appear in the mod's
         // settings under "Hello" while the plugin is on, and are read back
         // with getBoolean / getInt.
-        margyt().addSettingsSection("Diary");
-        margyt().addSettingsToggle("Log every start", "Writes a line on each launch",
+        tokkiyou().addSettingsSection("Diary");
+        tokkiyou().addSettingsToggle("Log every start", "Writes a line on each launch",
                 "log_starts", true);
-        margyt().addSettingsChoice("Style", null, "style",
+        tokkiyou().addSettingsChoice("Style", null, "style",
                 new String[] {"Short", "Verbose"}, 0);
-        margyt().addSettingsSlider("Repeat", "Lines per start", "repeat", 1, 5, 1);
+        tokkiyou().addSettingsSlider("Repeat", "Lines per start", "repeat", 1, 5, 1);
     }
 
     /**

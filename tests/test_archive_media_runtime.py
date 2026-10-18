@@ -15,18 +15,18 @@ class ArchiveMediaTest(unittest.TestCase):
  'android/Manifest.java':'package android;public class Manifest{public static class permission{public static String WRITE_EXTERNAL_STORAGE="storage";}}',
  'android/content/pm/PackageManager.java':'package android.content.pm;public class PackageManager{public static int PERMISSION_GRANTED=0;}',
  'android/media/MediaScannerConnection.java':'package android.media;public class MediaScannerConnection{public static void scanFile(android.content.Context c,String[] p,String[] m,Object cb){}}',
- 'cat/narezany/margyt/Gallery.java':'package cat.narezany.margyt;class Gallery{static String FOLDER="ttcuz";}',
- 'cat/narezany/margyt/DownloadTasks.java':'package cat.narezany.margyt;class DownloadTasks{static class Control{boolean stop;public boolean cancelled(){return stop;}}}'
+ 'cat/narezany/tokkiyou/Gallery.java':'package cat.narezany.tokkiyou;class Gallery{static String FOLDER="ttcuz";}',
+ 'cat/narezany/tokkiyou/DownloadTasks.java':'package cat.narezany.tokkiyou;class DownloadTasks{static class Control{boolean stop;public boolean cancelled(){return stop;}}}'
  }
-  sources['cat/narezany/margyt/MediaFiles.java']=(ROOT/'inject/java/cat/narezany/margyt/MediaFiles.java').read_text(encoding='utf-8')
-  sources['cat/narezany/margyt/Test.java']=HARNESS
+  sources['cat/narezany/tokkiyou/MediaFiles.java']=(ROOT/'inject/java/cat/narezany/tokkiyou/MediaFiles.java').read_text(encoding='utf-8')
+  sources['cat/narezany/tokkiyou/Test.java']=HARNESS
   with tempfile.TemporaryDirectory() as directory:
    work=pathlib.Path(directory)
    __import__("android_doubles").with_mod(sources)
    for name,source in sources.items():p=work/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(source,encoding='utf-8')
    result=subprocess.run(['javac','-encoding','UTF-8','-source','8','-target','8','-d',str(work)]+[str(p) for p in work.rglob('*.java')],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
-   result=subprocess.run(['java','-cp',str(work),'cat.narezany.margyt.Test',str(work)],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
-HARNESS=r'''package cat.narezany.margyt;import android.content.*;import java.io.*;
+   result=subprocess.run(['java','-cp',str(work),'cat.narezany.tokkiyou.Test',str(work)],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
+HARNESS=r'''package cat.narezany.tokkiyou;import android.content.*;import java.io.*;
 public class Test{static void check(boolean b,String s){if(!b)throw new AssertionError(s);}public static void main(String[] args)throws Exception{File f=new File(args[0],"video");byte[] bytes=new byte[150000];for(int i=0;i<bytes.length;i++)bytes[i]=(byte)i;try(FileOutputStream out=new FileOutputStream(f)){out.write(bytes);}Context context=new Context();DownloadTasks.Control control=new DownloadTasks.Control();MediaFiles.save(context,f,"sample.mp4","video/mp4",control);check(context.resolver.published==1&&context.resolver.deleted==0&&java.util.Arrays.equals(bytes,context.resolver.out.toByteArray()),"exact streamed media committed");
 context=new Context();context.resolver.noOutput=true;boolean failed=false;try{MediaFiles.save(context,f,"sample.mp4","video/mp4",control);}catch(IOException e){failed=true;}check(failed&&context.resolver.deleted==1&&context.resolver.published==0,"null output cleans pending row");
 context=new Context();context.resolver.failCommit=true;failed=false;try{MediaFiles.save(context,f,"sample.mp4","video/mp4",control);}catch(IOException e){failed=true;}check(failed&&context.resolver.deleted==1&&context.resolver.published==0,"publish failure cleans pending row");

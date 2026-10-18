@@ -11,9 +11,9 @@ SOURCES={
 'android/view/MotionEvent.java':'package android.view;public class MotionEvent {public static final int ACTION_DOWN=0,ACTION_UP=1,ACTION_MOVE=2,ACTION_CANCEL=3;public int action;public float x,y;public MotionEvent(int a,float x,float y){action=a;this.x=x;this.y=y;}public int getActionMasked(){return action;}public float getX(){return x;}public float getY(){return y;}}',
 'android/view/View.java':'''package android.view;public class View {public static final int VISIBLE=0,GONE=8,IMPORTANT_FOR_ACCESSIBILITY_NO=2;public java.util.Map<Runnable,Long> queued=new java.util.HashMap<>();public boolean attached=true;public int visibility=0,window=0;public android.content.Context context;public View(android.content.Context c){context=c;}public android.content.Context getContext(){return context;}public android.content.res.Resources getResources(){return new android.content.res.Resources();}public void setImportantForAccessibility(int v){}public void setClickable(boolean v){}public void setFocusable(boolean v){}public void setVisibility(int v){visibility=v;}public boolean isAttachedToWindow(){return attached;}public int getWindowVisibility(){return window;}public void invalidate(){}public void postOnAnimation(Runnable r){queued.put(r,16L);}public void postDelayed(Runnable r,long ms){queued.put(r,ms);}public void removeCallbacks(Runnable r){queued.remove(r);}protected void onAttachedToWindow(){}protected void onDetachedFromWindow(){}protected void onWindowVisibilityChanged(int v){}protected void onSizeChanged(int a,int b,int c,int d){}protected void onDraw(android.graphics.Canvas c){}public boolean dispatchTouchEvent(MotionEvent e){return true;}}''',
 'android/widget/FrameLayout.java':'package android.widget;public class FrameLayout extends android.view.View {public FrameLayout(android.content.Context c){super(c);}}',
-'cat/narezany/margyt/Motion.java':'package cat.narezany.margyt;class Motion {static boolean on=true;static boolean enabled(android.content.Context c){return on;}}',
-'cat/narezany/margyt/Accent.java':'package cat.narezany.margyt;class Accent {static int colour(){return 0xff6750a4;}}',
-'cat/narezany/margyt/PlexusHarness.java':'''package cat.narezany.margyt;import android.view.MotionEvent;public class PlexusHarness {
+'cat/narezany/tokkiyou/Motion.java':'package cat.narezany.tokkiyou;class Motion {static boolean on=true;static boolean enabled(android.content.Context c){return on;}}',
+'cat/narezany/tokkiyou/Accent.java':'package cat.narezany.tokkiyou;class Accent {static int colour(){return 0xff6750a4;}}',
+'cat/narezany/tokkiyou/PlexusHarness.java':'''package cat.narezany.tokkiyou;import android.view.MotionEvent;public class PlexusHarness {
  static void check(boolean b,String s){if(!b)throw new AssertionError(s);}
  public static void main(String[] args)throws Exception {
   PlexusField f=new PlexusField();f.resize(360,800,1);
@@ -39,9 +39,9 @@ class PlexusRuntimeTest(unittest.TestCase):
   with tempfile.TemporaryDirectory() as d:
    work=pathlib.Path(d);sources=dict(SOURCES)
    for name in ('PlexusField','PlexusBackground'):
-    sources['cat/narezany/margyt/'+name+'.java']=(ROOT/('inject/java/cat/narezany/margyt/'+name+'.java')).read_text(encoding='utf-8')
+    sources['cat/narezany/tokkiyou/'+name+'.java']=(ROOT/('inject/java/cat/narezany/tokkiyou/'+name+'.java')).read_text(encoding='utf-8')
    __import__("android_doubles").with_mod(sources)
    for name,s in sources.items():
     p=work/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8')
    run=subprocess.run(['javac','-source','8','-target','8','-encoding','UTF-8','-d',d]+[str(work/n) for n in sources],capture_output=True,text=True);self.assertEqual(0,run.returncode,run.stderr)
-   run=subprocess.run(['java','-cp',d,'cat.narezany.margyt.PlexusHarness'],capture_output=True,text=True);self.assertEqual(0,run.returncode,run.stderr)
+   run=subprocess.run(['java','-cp',d,'cat.narezany.tokkiyou.PlexusHarness'],capture_output=True,text=True);self.assertEqual(0,run.returncode,run.stderr)

@@ -2,7 +2,7 @@
 import unittest
 import test_settings_safety_runtime as safety
 method=safety.method
-from margyt import dexpatch
+from tokkiyou import dexpatch
 class AccentCoverageTest(unittest.TestCase):
  def test_shapes_and_state_lists(self):
   body=''.join(method('Accent.java',m) for m in ('    private static Drawable movedShape','    private static ColorStateList moved(ColorStateList','    private static ColorStateList moveColours','    private static Object call','    private static ColorStateList repaintedColours'))

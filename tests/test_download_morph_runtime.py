@@ -3,16 +3,16 @@ import pathlib,shutil,subprocess,tempfile,unittest
 from test_screen_runtime import STUBS as BASE
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 STUBS=dict(BASE)
-STUBS.pop('cat/narezany/margyt/DownloadMark.java')
+STUBS.pop('cat/narezany/tokkiyou/DownloadMark.java')
 STUBS['android/view/View.java']=STUBS['android/view/View.java'].replace('public static final int VISIBLE=0;', 'public static final int VISIBLE=0,INVISIBLE=4,IMPORTANT_FOR_ACCESSIBILITY_NO=2,ACCESSIBILITY_LIVE_REGION_POLITE=1;public void setVisibility(int v){}public float alpha=1;public int width=260,height=50;public void setWillNotDraw(boolean b){}public void setContentDescription(String s){}public void setAccessibilityLiveRegion(int n){}public void setImportantForAccessibility(int n){}public int getTop(){return 32;}').replace('public void setAlpha(float v){}','public void setAlpha(float v){alpha=v;}').replace('public int getWidth(){return 300;}public int getHeight(){return 50;}', 'public int getWidth(){return width;}public int getHeight(){return height;}')
 STUBS['android/graphics/Paint.java']='''package android.graphics;public class Paint {public static int ANTI_ALIAS_FLAG=1;public enum Style {FILL,STROKE}public enum Cap {ROUND}public enum Join {ROUND}public int colour;public float thickness;public Paint(int f){}public void setColor(int c){colour=c;}public void setStyle(Style s){}public void setStrokeCap(Cap c){}public void setStrokeJoin(Join j){}public void setStrokeWidth(float n){thickness=n;}public float measureText(String s){return s.length()*7;}}'''
 STUBS['android/graphics/Path.java']='''package android.graphics;public class Path {public java.util.List<float[]> points=new java.util.ArrayList<>();public void reset(){points.clear();}public void moveTo(float x,float y){points.add(new float[]{x,y});}public void lineTo(float x,float y){points.add(new float[]{x,y});}public void close(){}}'''
 STUBS['android/graphics/Canvas.java']='''package android.graphics;public class Canvas {public java.util.List<java.util.List<float[]>> paths=new java.util.ArrayList<>();public java.util.List<Integer> colours=new java.util.ArrayList<>();public void drawPath(Path p,Paint paint){paths.add(new java.util.ArrayList<>(p.points));colours.add(paint.colour);}}'''
 STUBS['android/os/SystemClock.java']='package android.os;public class SystemClock {public static long now=1000;public static long uptimeMillis(){return now;}}'
-STUBS['cat/narezany/margyt/Motion.java']='package cat.narezany.margyt;class Motion {static boolean animate=true;static boolean enabled(android.content.Context c){return animate;}}'
+STUBS['cat/narezany/tokkiyou/Motion.java']='package cat.narezany.tokkiyou;class Motion {static boolean animate=true;static boolean enabled(android.content.Context c){return animate;}}'
 STUBS['android/view/View.java']=STUBS['android/view/View.java'].replace('public static final int VISIBLE=0;', 'public static final int VISIBLE=0,INVISIBLE=4;')
 STUBS['android/view/View.java']=STUBS['android/view/View.java'].replace('public void setWillNotDraw', 'public int invalidations;public boolean isShown(){return true;}public void postInvalidateOnAnimation(){invalidations++;}public void setWillNotDraw')
-HARNESS='''package cat.narezany.margyt;import android.graphics.*;import android.widget.*;
+HARNESS='''package cat.narezany.tokkiyou;import android.graphics.*;import android.widget.*;
 public class MorphHarness {
  static void check(boolean b,String s){if(!b)throw new AssertionError(s);}static void near(float a,float b,String s){check(Math.abs(a-b)<0.01,s);}
  public static void main(String[] args){
@@ -37,10 +37,10 @@ class DownloadMorphRuntimeTest(unittest.TestCase):
  def test_surface_and_contour(self):
   with tempfile.TemporaryDirectory() as directory:
    work=pathlib.Path(directory);sources=dict(STUBS)
-   for name in ('DownloadMark','DownloadMorph','DownloadWave'):sources['cat/narezany/margyt/'+name+'.java']=(ROOT/('inject/java/cat/narezany/margyt/'+name+'.java')).read_text(encoding='utf-8')
-   sources['cat/narezany/margyt/MorphHarness.java']=HARNESS
+   for name in ('DownloadMark','DownloadMorph','DownloadWave'):sources['cat/narezany/tokkiyou/'+name+'.java']=(ROOT/('inject/java/cat/narezany/tokkiyou/'+name+'.java')).read_text(encoding='utf-8')
+   sources['cat/narezany/tokkiyou/MorphHarness.java']=HARNESS
    __import__("android_doubles").with_mod(sources)
    for name,content in sources.items():
     path=work/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(content,encoding='utf-8')
    result=subprocess.run(['javac','-source','8','-target','8','-encoding','UTF-8','-d',str(work)]+[str(work/n) for n in sources],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
-   result=subprocess.run(['java','-cp',str(work),'cat.narezany.margyt.MorphHarness'],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)
+   result=subprocess.run(['java','-cp',str(work),'cat.narezany.tokkiyou.MorphHarness'],capture_output=True,text=True);self.assertEqual(0,result.returncode,result.stderr)

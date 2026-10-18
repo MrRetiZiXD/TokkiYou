@@ -1068,7 +1068,7 @@ def face(which):
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "margyt"
+    server_version = "tokkiyou"
     sys_version = ""
 
     #: a connection that says nothing for this long is dropped, so a socket

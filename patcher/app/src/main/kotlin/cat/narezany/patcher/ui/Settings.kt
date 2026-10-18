@@ -197,8 +197,8 @@ fun SettingsScreen(back: () -> Unit) {
             }
 
             Group(words.about) {
-                row(Icons.Rounded.Info, words.version(BuildConfig.VERSION_NAME), "@margymods",
-                    pressed = { Launch.link(context, "https://t.me/margymods") })
+                row(Icons.Rounded.Info, words.version(BuildConfig.VERSION_NAME), "@tokkiyoumods",
+                    pressed = { Launch.link(context, "https://t.me/tokkiyoumods") })
             }
             Spacer(Modifier.height(24.dp))
         }

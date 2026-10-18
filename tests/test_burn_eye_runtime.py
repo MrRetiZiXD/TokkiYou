@@ -24,15 +24,15 @@ STUBS['android/graphics/drawable/Drawable.java']='package android.graphics.drawa
 STUBS['android/graphics/Paint.java']=STUBS['android/graphics/Paint.java'].replace('public void setColorFilter', 'public enum Style {STROKE,FILL}public enum Cap {ROUND}public enum Join {ROUND}public void setStrokeJoin(Join j){}public void setAlpha(int a){}public void setColor(int c){}public void setStyle(Style s){}public void setStrokeWidth(float v){}public void setStrokeCap(Cap c){}public void setColorFilter')
 STUBS['android/graphics/Canvas.java']=STUBS['android/graphics/Canvas.java'].replace('public void drawBitmap', 'public static int bitmaps;public static Bitmap lastBitmap;public static Rect lastDst;public static int circles;public void drawBitmap(Bitmap b,Rect s,Rect d,Paint p){bitmaps++;lastBitmap=b;lastDst=d;}public int save(){return 0;}public void restoreToCount(int n){}public void translate(float x,float y){}public void scale(float x,float y){}public void drawPath(Path p,Paint q){}public void drawLine(float a,float b,float c,float d,Paint p){}public void drawCircle(float a,float b,float c,Paint p){circles++;}public void drawBitmap')
 STUBS['android/view/Gravity.java']=STUBS['android/view/Gravity.java'].replace('BOTTOM=1', 'TOP=8,LEFT=16,BOTTOM=1')
-STUBS['cat/narezany/margyt/Dim.java']='package cat.narezany.margyt;class Dim {static boolean configured=true;static boolean isConfigured(){return configured;}static int strength=35;static int strength(){return strength;}static void toggleOpacity(){enabled=!enabled;}static void retry(){retries++;}static int retries;static boolean enabled;static boolean isEnabled(){return enabled;}static void setEnabled(boolean v){enabled=v;}}'
-STUBS['cat/narezany/margyt/Text.java']='package cat.narezany.margyt;class Text {static String DIM_EYE_ON="on",DIM_EYE_OFF="off";}'
+STUBS['cat/narezany/tokkiyou/Dim.java']='package cat.narezany.tokkiyou;class Dim {static boolean configured=true;static boolean isConfigured(){return configured;}static int strength=35;static int strength(){return strength;}static void toggleOpacity(){enabled=!enabled;}static void retry(){retries++;}static int retries;static boolean enabled;static boolean isEnabled(){return enabled;}static void setEnabled(boolean v){enabled=v;}}'
+STUBS['cat/narezany/tokkiyou/Text.java']='package cat.narezany.tokkiyou;class Text {static String DIM_EYE_ON="on",DIM_EYE_OFF="off";}'
 STUBS['android/content/res/AssetManager.java']='package android.content.res;public class AssetManager {public java.io.InputStream open(String n)throws java.io.IOException{if(n.contains("missing"))throw new java.io.IOException(n);return new java.io.ByteArrayInputStream(n.getBytes());}}'
 STUBS['android/graphics/BitmapFactory.java']='package android.graphics;public class BitmapFactory {public static int decoded;public static boolean fail;public static Bitmap decodeStream(java.io.InputStream in){decoded++;return fail?null:new Bitmap();}}'
 STUBS['android/content/Context.java']=STUBS['android/content/Context.java'].replace('public class Context {','public class Context {public android.content.res.AssetManager getAssets(){return new android.content.res.AssetManager();}')
-STUBS['cat/narezany/margyt/Diary.java']='package cat.narezany.margyt;class Diary {static void note(String s){}}'
+STUBS['cat/narezany/tokkiyou/Diary.java']='package cat.narezany.tokkiyou;class Diary {static void note(String s){}}'
 from animation_doubles import STUBS as ANIMATION
 STUBS.update(ANIMATION)
-HARNESS="""package cat.narezany.margyt;import android.view.*;import android.widget.*;
+HARNESS="""package cat.narezany.tokkiyou;import android.view.*;import android.widget.*;
 public class EyeHarness {static void check(boolean b,String s){if(!b)throw new AssertionError(s);}public static void main(String[] args){
 FrameLayout root=new FrameLayout();root.width=400;root.height=900;
 View live=new View();live.setTag(0x7f0a374f,"live");live.width=40;live.height=40;live.left=12;live.top=60;live.clickable=true;root.addView(live,new FrameLayout.LayoutParams(40,40));
@@ -60,7 +60,7 @@ eye=BurnEye.installVideo(root);layout=(FrameLayout.LayoutParams)eye.getLayoutPar
 
 }}
 """
-FAIL_HARNESS="""package cat.narezany.margyt;import android.view.*;import android.widget.*;
+FAIL_HARNESS="""package cat.narezany.tokkiyou;import android.view.*;import android.widget.*;
 public class EyeFailHarness {public static void main(String[] a)throws Exception{
 android.graphics.BitmapFactory.fail=true;FrameLayout root=new FrameLayout();root.width=400;root.height=900;
 TextView title=new TextView(new android.content.Context());title.setText("Рекомендации");title.left=130;title.top=40;title.width=120;title.height=40;root.addView(title,new FrameLayout.LayoutParams(120,40));
@@ -76,26 +76,26 @@ class BurnEyeRuntimeTest(unittest.TestCase):
  def test_eye_replaces_live_and_restores_on_navigation(self):
   with tempfile.TemporaryDirectory() as directory:
    work=pathlib.Path(directory);sources=dict(STUBS)
-   sources['cat/narezany/margyt/BurnEye.java']=(ROOT/'inject/java/cat/narezany/margyt/BurnEye.java').read_text(encoding='utf-8')
-   sources['cat/narezany/margyt/SettingsGlyph.java']=(ROOT/'inject/java/cat/narezany/margyt/SettingsGlyph.java').read_text(encoding='utf-8')
-   sources['cat/narezany/margyt/EyeHarness.java']=HARNESS
+   sources['cat/narezany/tokkiyou/BurnEye.java']=(ROOT/'inject/java/cat/narezany/tokkiyou/BurnEye.java').read_text(encoding='utf-8')
+   sources['cat/narezany/tokkiyou/SettingsGlyph.java']=(ROOT/'inject/java/cat/narezany/tokkiyou/SettingsGlyph.java').read_text(encoding='utf-8')
+   sources['cat/narezany/tokkiyou/EyeHarness.java']=HARNESS
    __import__("android_doubles").with_mod(sources)
    for name,value in sources.items():
     target=work/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(value,encoding='utf-8')
    built=subprocess.run(['javac','-source','8','-target','8','-encoding','UTF-8','-d',str(work)]+[str(work/name) for name in sources],capture_output=True,text=True)
    self.assertEqual(0,built.returncode,built.stderr)
-   run=subprocess.run(['java','-cp',str(work),'cat.narezany.margyt.EyeHarness'],capture_output=True,text=True)
+   run=subprocess.run(['java','-cp',str(work),'cat.narezany.tokkiyou.EyeHarness'],capture_output=True,text=True)
    self.assertEqual(0,run.returncode,run.stderr)
  @unittest.skipUnless(shutil.which('java') and shutil.which('javac'),'JDK required')
  def test_unreadable_art_falls_back_to_vector_eye(self):
   with tempfile.TemporaryDirectory() as directory:
    work=pathlib.Path(directory);sources=dict(STUBS)
-   sources['cat/narezany/margyt/BurnEye.java']=(ROOT/'inject/java/cat/narezany/margyt/BurnEye.java').read_text(encoding='utf-8')
-   sources['cat/narezany/margyt/SettingsGlyph.java']=(ROOT/'inject/java/cat/narezany/margyt/SettingsGlyph.java').read_text(encoding='utf-8')
-   sources['cat/narezany/margyt/EyeFailHarness.java']=FAIL_HARNESS
+   sources['cat/narezany/tokkiyou/BurnEye.java']=(ROOT/'inject/java/cat/narezany/tokkiyou/BurnEye.java').read_text(encoding='utf-8')
+   sources['cat/narezany/tokkiyou/SettingsGlyph.java']=(ROOT/'inject/java/cat/narezany/tokkiyou/SettingsGlyph.java').read_text(encoding='utf-8')
+   sources['cat/narezany/tokkiyou/EyeFailHarness.java']=FAIL_HARNESS
    for name,value in sources.items():
     target=work/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(value,encoding='utf-8')
    built=subprocess.run(['javac','-source','8','-target','8','-encoding','UTF-8','-d',str(work)]+[str(work/name) for name in sources],capture_output=True,text=True)
    self.assertEqual(0,built.returncode,built.stderr)
-   run=subprocess.run(['java','-cp',str(work),'cat.narezany.margyt.EyeFailHarness'],capture_output=True,text=True)
+   run=subprocess.run(['java','-cp',str(work),'cat.narezany.tokkiyou.EyeFailHarness'],capture_output=True,text=True)
    self.assertEqual(0,run.returncode,run.stderr)

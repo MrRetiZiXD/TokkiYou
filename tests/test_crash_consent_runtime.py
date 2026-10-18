@@ -6,8 +6,8 @@ import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-SRC = ROOT / 'inject/java/cat/narezany/margyt'
-PKG = 'package cat.narezany.margyt; '
+SRC = ROOT / 'inject/java/cat/narezany/tokkiyou'
+PKG = 'package cat.narezany.tokkiyou; '
 STUBS = {
     'android/animation/TimeInterpolator.java': 'package android.animation; public interface TimeInterpolator {}',
     'android/view/animation/LinearInterpolator.java':
@@ -104,26 +104,26 @@ STUBS = {
         public void dismiss(){showing=false;if(listener!=null)listener.onDismiss(this);} }''',
     'android/app/Activity.java': '''package android.app; public class Activity extends android.content.Context {
         public boolean finishing; public boolean isFinishing(){return finishing;} public boolean isDestroyed(){return false;} }''',
-    'cat/narezany/margyt/Margy.java': PKG + 'class Margy {static String PREFS="mod";}',
-    'cat/narezany/margyt/Skin.java': PKG + '''class Skin {int text=-1; int muted(){return 0x99FFFFFF;}
+    'cat/narezany/tokkiyou/TokkiYou.java': PKG + 'class TokkiYou {static String PREFS="mod";}',
+    'cat/narezany/tokkiyou/Skin.java': PKG + '''class Skin {int text=-1; int muted(){return 0x99FFFFFF;}
         static Skin remembered(android.content.Context c){return new Skin();} }''',
-    'cat/narezany/margyt/Accent.java': PKG + 'class Accent {static int colour(){return 0xFF3366FF;}}',
-    'cat/narezany/margyt/Motion.java': PKG + '''class Motion {static boolean on=true;
+    'cat/narezany/tokkiyou/Accent.java': PKG + 'class Accent {static int colour(){return 0xFF3366FF;}}',
+    'cat/narezany/tokkiyou/Motion.java': PKG + '''class Motion {static boolean on=true;
         static boolean enabled(android.content.Context c){return on;} static void touch(android.view.View v){} }''',
-    'cat/narezany/margyt/Expressive.java': PKG + '''class Expressive {
+    'cat/narezany/tokkiyou/Expressive.java': PKG + '''class Expressive {
         static android.graphics.drawable.Drawable tile(android.content.Context c,int fill,int ripple,float top,float bottom,float pressed){
             return new android.graphics.drawable.Drawable();} }''',
-    'cat/narezany/margyt/SettingsGlyph.java': PKG + '''class SettingsGlyph {static int made;
+    'cat/narezany/tokkiyou/SettingsGlyph.java': PKG + '''class SettingsGlyph {static int made;
         static android.graphics.drawable.Drawable make(String n,int c){made++;return new android.graphics.drawable.Drawable();} }''',
-    'cat/narezany/margyt/Diary.java': PKG + 'class Diary {static void note(String s){}}',
-    'cat/narezany/margyt/Text.java': PKG + '''class Text {
+    'cat/narezany/tokkiyou/Diary.java': PKG + 'class Diary {static void note(String s){}}',
+    'cat/narezany/tokkiyou/Text.java': PKG + '''class Text {
         static final String CONSENT_TITLE="title",CONSENT_BODY="body",CONSENT_NOTE="note",CONSENT_WAIT="wait %d",
             CONSENT_YES="yes",CONSENT_NO="no"; }''',
-    'cat/narezany/margyt/CrashReports.java': PKG + '''class CrashReports {
+    'cat/narezany/tokkiyou/CrashReports.java': PKG + '''class CrashReports {
         static final String KEY="crash_reports",ASKED="crash_consent_v1"; static int sets;
         static void set(android.content.Context c,boolean on){sets++;
             c.getSharedPreferences("mod",0).edit().putBoolean(KEY,on).putBoolean(ASKED,true).apply();} }''',
-    'cat/narezany/margyt/Panel.java': PKG + '''class Panel {
+    'cat/narezany/tokkiyou/Panel.java': PKG + '''class Panel {
         static Panel last; static int created; android.app.Dialog dialog=new android.app.Dialog(); android.view.View content;
         static Panel with(android.content.Context c,Skin s,String t){last=new Panel();created++;return last;}
         Panel view(android.view.View v){content=v;return this;}
@@ -209,8 +209,8 @@ class CrashConsentRuntimeTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             work = pathlib.Path(directory)
             sources = dict(STUBS)
-            sources['cat/narezany/margyt/CrashConsent.java'] = (SRC / 'CrashConsent.java').read_text(encoding='utf-8')
-            sources['cat/narezany/margyt/ConsentHarness.java'] = HARNESS
+            sources['cat/narezany/tokkiyou/CrashConsent.java'] = (SRC / 'CrashConsent.java').read_text(encoding='utf-8')
+            sources['cat/narezany/tokkiyou/ConsentHarness.java'] = HARNESS
             __import__("android_doubles").with_mod(sources)
             for name, content in sources.items():
                 path = work / name
@@ -219,7 +219,7 @@ class CrashConsentRuntimeTest(unittest.TestCase):
             compiled = subprocess.run(['javac', '-source', '8', '-target', '8', '-encoding', 'UTF-8', '-d', str(work)] +
                                       [str(work / name) for name in sources], capture_output=True, text=True)
             self.assertEqual(0, compiled.returncode, compiled.stderr)
-            result = subprocess.run(['java', '-cp', str(work), 'cat.narezany.margyt.ConsentHarness'],
+            result = subprocess.run(['java', '-cp', str(work), 'cat.narezany.tokkiyou.ConsentHarness'],
                                     capture_output=True, text=True)
             self.assertEqual(0, result.returncode, result.stderr)
             self.assertIn('Crash-report question scenarios passed', result.stdout)

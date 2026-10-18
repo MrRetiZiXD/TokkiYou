@@ -3,7 +3,7 @@ import pathlib, shutil, unittest
 import test_settings_safety_runtime as safety
 method = safety.method
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-JAVA = ROOT / 'inject/java/cat/narezany/margyt'
+JAVA = ROOT / 'inject/java/cat/narezany/tokkiyou'
 
 COLOR = '''package android.graphics;public class Color {
  public static int alpha(int c){return c>>>24;}
@@ -22,8 +22,8 @@ class SecondaryAccentTest(unittest.TestCase):
         palette = (JAVA / 'Palette.java').read_text(encoding='utf-8')
         sources = {
             'android/graphics/Color.java': COLOR,
-            'cat/narezany/margyt/Palette.java': palette,
-            'Test.java': '''import cat.narezany.margyt.Palette;
+            'cat/narezany/tokkiyou/Palette.java': palette,
+            'Test.java': '''import cat.narezany.tokkiyou.Palette;
 public class Test {
  static void yes(int c,String m){if(!Palette.secondary(c))throw new AssertionError(m);}
  static void no(int c,String m){if(Palette.secondary(c))throw new AssertionError(m);}
@@ -45,8 +45,8 @@ public class Test {
         body = method('Accent.java', '    private static int sourced(')
         sources = {
             'android/graphics/Color.java': COLOR,
-            'cat/narezany/margyt/Palette.java': (JAVA / 'Palette.java').read_text(encoding='utf-8'),
-            'Test.java': '''import cat.narezany.margyt.Palette;
+            'cat/narezany/tokkiyou/Palette.java': (JAVA / 'Palette.java').read_text(encoding='utf-8'),
+            'Test.java': '''import cat.narezany.tokkiyou.Palette;
 public class Test {
  static int TIKTOK=0xFFFE2C55,chosen=0xFF6750A4;
  static int colour(){return chosen;} static int accent(){return chosen;}
@@ -118,8 +118,8 @@ public class Test {
         self.assertIn('if (!animatedDots && name != null && !mediaName(name))', colours)
         sources = {
             'android/graphics/Color.java': COLOR,
-            'cat/narezany/margyt/Palette.java': (JAVA / 'Palette.java').read_text(encoding='utf-8'),
-            'Test.java': '''import cat.narezany.margyt.Palette;
+            'cat/narezany/tokkiyou/Palette.java': (JAVA / 'Palette.java').read_text(encoding='utf-8'),
+            'Test.java': '''import cat.narezany.tokkiyou.Palette;
 public class Test {
  static void check(boolean b,String m){if(!b)throw new AssertionError(m);}
  public static void main(String[] a){int pink=0xFFFE2C55,cyan=0xFF25F4EE,accent=0xFF6750A4;

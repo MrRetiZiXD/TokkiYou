@@ -1,6 +1,6 @@
 import os, tempfile, unittest
 
-from margyt import dexpatch
+from tokkiyou import dexpatch
 
 ROWS = (".class public final LX/0MUp;\n.super Ljava/lang/Object;\n\n"
         ".method public static final LIZ(LX/0MUl;ZZLX/0Lx7;I)V\n    .registers 40\n\n"
@@ -39,12 +39,12 @@ class SettingsRowHookTests(unittest.TestCase):
                 patched = handle.read()
             # TikTok's own function is as it was, and the copy follows it
             self.assertTrue(patched.startswith(ROWS[:ROWS.index(".method public static final LIZIZ()V")].rstrip("\n")))
-            copy = patched[patched.index("final margyt(LX/0MUl;ZZLX/0Lx7;I)V"):]
+            copy = patched[patched.index("final tokkiyou(LX/0MUl;ZZLX/0Lx7;I)V"):]
             copy = copy[:copy.index(".end method")]
-            self.assertIn("invoke-static {}, Lcat/narezany/margyt/SettingsCell;->title()Ljava/lang/String;\n\n"
+            self.assertIn("invoke-static {}, Lcat/narezany/tokkiyou/SettingsCell;->title()Ljava/lang/String;\n\n"
                           "    move-result-object v11", copy)
             self.assertIn("sget-object v0, LX/0LMt;->o:LX/0LPz;", copy)
-            self.assertIn("invoke-static {v5, v4, v3, v2}, Lcat/narezany/margyt/SettingsCell;->again"
+            self.assertIn("invoke-static {v5, v4, v3, v2}, Lcat/narezany/tokkiyou/SettingsCell;->again"
                           "(Ljava/lang/Object;ZZI)Ljava/lang/Object;\n\n    move-result-object v0\n\n"
                           "    check-cast v0, Lkotlin/jvm/functions/Function2;\n\n"
                           "    iput-object v0, v1, LX/0MXC;->LIZLLL:Lkotlin/jvm/functions/Function2;", copy)
@@ -54,7 +54,7 @@ class SettingsRowHookTests(unittest.TestCase):
             with open(group, encoding="utf-8") as handle:
                 patched_group = handle.read()
             # asked just before the first row, and what the row was told is put back after it
-            self.assertIn("    move v1, v9\n\n    invoke-static {v9, v6}, Lcat/narezany/margyt/SettingsCell;->draw"
+            self.assertIn("    move v1, v9\n\n    invoke-static {v9, v6}, Lcat/narezany/tokkiyou/SettingsCell;->draw"
                           "(ZLjava/lang/Object;)Z\n\n    move-result v9\n\n" + dexpatch.SETTINGS_FIRST_ROW
                           + "\n    move v9, v1\n", patched_group)
             # a second pass finds it done and says so, rather than doing it again
@@ -76,7 +76,7 @@ class SettingsRowHookTests(unittest.TestCase):
 
             self.assertEqual(dexpatch.rewrite_settings_row(room), {dexpatch.SETTINGS_LABEL: 2})
             with open(rows, encoding="utf-8") as handle:
-                self.assertIn("final margyt(LX/0MUl;ZZLX/0Lx7;I)V", handle.read())
+                self.assertIn("final tokkiyou(LX/0MUl;ZZLX/0Lx7;I)V", handle.read())
             with open(group, encoding="utf-8") as handle:
                 self.assertIn(dexpatch.SETTINGS_CELL + "->draw(ZLjava/lang/Object;)Z", handle.read())
 
@@ -85,7 +85,7 @@ class SettingsRowHookTests(unittest.TestCase):
             rows = self.write(room, "0MUp", ROWS.replace("LX/0LMt;->n:", "LX/0LMt;->q:"))
             self.assertEqual(dexpatch.rewrite_settings_row(room), {})
             with open(rows, encoding="utf-8") as handle:
-                self.assertNotIn("margyt", handle.read())
+                self.assertNotIn("tokkiyou", handle.read())
             # and a dex that only names the classes is not searched for them
             self.write(room, "1Htf", GROUP)
             self.assertEqual(dexpatch.rewrite_settings_row(room, b"LX/0MUp; LX/1Htf; but not here"), {})

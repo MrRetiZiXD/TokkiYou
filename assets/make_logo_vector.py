@@ -2,7 +2,7 @@
 
     python3 assets/make_logo_vector.py
 
-The soft note exists as a picture -- `icon_out/margyt-1024-glyph.png`, white
+The soft note exists as a picture -- `icon_out/tokkiyou-1024-glyph.png`, white
 on nothing, laid out in the same square an adaptive icon uses -- and a
 launcher from Android 8 on does not take a picture for the front of an icon in
 this apk: the file it reads there is an XML one, so what goes in has to be a
@@ -13,7 +13,7 @@ from more than half there to less than half, the crossing is placed by how far
 each side is from half, which is what keeps a curve a curve instead of a
 staircase. The points that add nothing are then dropped.
 
-What it prints goes into `margyt/artwork.py` as GLYPH.
+What it prints goes into `tokkiyou/artwork.py` as GLYPH.
 """
 import math
 import os
@@ -24,7 +24,7 @@ import numpy
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SOURCE = os.path.join(ROOT, "icon_out", "margyt-1024-glyph.png")
+SOURCE = os.path.join(ROOT, "icon_out", "tokkiyou-1024-glyph.png")
 VIEWPORT = 108.0
 #: how far, in the 108-unit square, a dropped point may have been from the line
 #: that replaces it. A hundredth of a unit is a twentieth of a pixel on the
@@ -163,7 +163,7 @@ if __name__ == "__main__":
     print(data)
     print("%d outlines, %d points, %d characters"
           % (data.count("M"), data.count(","), len(data)), file=sys.stderr)
-    artwork = os.path.join(ROOT, "margyt", "artwork.py")
+    artwork = os.path.join(ROOT, "tokkiyou", "artwork.py")
     with open(artwork, encoding="utf-8") as source:
         text = source.read()
     chunks = [data[i:i + 96] for i in range(0, len(data), 96)]

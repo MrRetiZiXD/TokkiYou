@@ -58,14 +58,14 @@ Without one the list draws a dot in the accent colour.
 | `name` | The name in the list. Required. |
 | `version` | A string, shown next to the name. Required. |
 | `author` | Who wrote it. Required. |
-| `entry` | The class that extends `MargyPlugin`, in full. Required. |
+| `entry` | The class that extends `TokkiYouPlugin`, in full. Required. |
 | `description` | A line or two: what it does. |
 | `min_api` | The oldest plugin api the plugin works with. The loader refuses a plugin that wants a newer one, with a reason rather than a crash. Defaults to 1. |
 | `name_ru`, `description_uk`, … | The same field in another language. The app takes the one matching the phone's language and falls back to the plain field. |
 
 ## The plugin itself
 
-Extend `MargyPlugin` and override what you care about. Everything has a body
+Extend `TokkiYouPlugin` and override what you care about. Everything has a body
 that does nothing, so a plugin that only wants one hook writes one method, and
 hooks added in later versions of the mod do not break it.
 
@@ -73,12 +73,12 @@ hooks added in later versions of the mod do not break it.
 package cat.narezany.hello;
 
 import android.content.Context;
-import cat.narezany.margyt.plugin.MargyPlugin;
+import cat.narezany.tokkiyou.plugin.TokkiYouPlugin;
 
-public final class Hello extends MargyPlugin {
+public final class Hello extends TokkiYouPlugin {
     @Override
     public void onStart(Context context) {
-        margyt().log("hello");
+        tokkiyou().log("hello");
     }
 }
 ```
@@ -107,7 +107,7 @@ throw the same exception on every frame either.
 
 ### What the mod hands you
 
-`margyt()` returns a `PluginContext`:
+`tokkiyou()` returns a `PluginContext`:
 
 | | |
 |---|---|
@@ -123,17 +123,17 @@ There is no hooking of TikTok's own methods at runtime. Without root there is
 no Xposed, and the app's own code is obfuscated and rewritten between releases;
 the hooks above are the ones the mod can promise to still mean the same thing
 next month. If you need one that is not here, the honest route is a patch to
-`margyt/dexpatch.py` that adds a call site, and a hook next to these — open an
+`tokkiyou/dexpatch.py` that adds a call site, and a hook next to these — open an
 issue rather than reaching in with reflection that will break.
 
 ## Building one
 
 ```bash
-python3 -m margyt.plugin examples/hello
+python3 -m tokkiyou.plugin examples/hello
 ```
 
 That compiles `java/` against `android.jar` and the plugin api, dexes it, and
-writes `margyt.hello.mtp` next to the manifest. It needs a JDK and Python 3 and
+writes `tokkiyou.hello.mtp` next to the manifest. It needs a JDK and Python 3 and
 nothing else: the toolchain is the same pinned one `build.sh` downloads into
 `tools/`, so whichever you run first fetches it.
 
@@ -164,7 +164,7 @@ restarted, which is why the mod asks for one. Hold a row to remove a plugin.
 
 ## Versions
 
-`MargyPlugin.API` is the plugin api version, and it goes up whenever a hook
+`TokkiYouPlugin.API` is the plugin api version, and it goes up whenever a hook
 changes shape. A plugin declares the oldest it works with as `min_api`, and the
 loader refuses anything newer than it knows rather than calling a hook that no
 longer means what the plugin thought.
@@ -217,12 +217,12 @@ Text on its way into a view.
 ## Putting something on the screen
 
 ```java
-margyt().addSettingsRow("Title", "the line under it", () -> { ... });
-margyt().showWindow("Title", "A sentence.");
-margyt().offer("Do the thing", () -> { ... });
-margyt().progress("Working", 40);
-margyt().progressGone();
-Activity now = margyt().screen();
+tokkiyou().addSettingsRow("Title", "the line under it", () -> { ... });
+tokkiyou().showWindow("Title", "A sentence.");
+tokkiyou().offer("Do the thing", () -> { ... });
+tokkiyou().progress("Working", 40);
+tokkiyou().progressGone();
+Activity now = tokkiyou().screen();
 ```
 
 `addSettingsRow` puts a row in the mod's own settings under the plugin's
@@ -240,8 +240,8 @@ an ordinary `Intent` if it really does want a screen from another app.
 ## Off the main thread
 
 ```java
-margyt().away("fetching", () -> {
-    byte[] raw = margyt().fetch("https://example.invalid/thing.json");
+tokkiyou().away("fetching", () -> {
+    byte[] raw = tokkiyou().fetch("https://example.invalid/thing.json");
 });
 ```
 
@@ -272,8 +272,8 @@ Additive API; old plugins do not need recompilation. Use `min_api: 4` if your pl
 
 ```java
 @Override public void onAccountChanged(String uid) {
-    boolean enabled = margyt().accountPrefs().getBoolean("enabled", false);
-    margyt().log("account preferences loaded: " + enabled);
+    boolean enabled = tokkiyou().accountPrefs().getBoolean("enabled", false);
+    tokkiyou().log("account preferences loaded: " + enabled);
 }
 ```
 

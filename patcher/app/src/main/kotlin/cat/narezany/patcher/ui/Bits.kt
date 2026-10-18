@@ -41,12 +41,12 @@ fun Modifier.clickableRow(pressed: () -> Unit): Modifier = this.clickable(onClic
 fun ModIcon(name: String, size: Dp) {
     val shape = RoundedCornerShape(percent = 28)
     when (name) {
-        "margyt" -> Image(painterResource(R.drawable.ic_margyt), contentDescription = null,
+        "tokkiyou" -> Image(painterResource(R.drawable.ic_tokkiyou), contentDescription = null,
             modifier = Modifier.size(size).clip(shape))
         // Lite's is the same note on black, as it is on the home screen
-        "margyt-lite" -> Image(painterResource(R.drawable.ic_margyt_lite), contentDescription = null,
+        "tokkiyou-lite" -> Image(painterResource(R.drawable.ic_tokkiyou_lite), contentDescription = null,
             modifier = Modifier.size(size).clip(shape))
-        "margyc" -> Image(painterResource(R.drawable.ic_margyc), contentDescription = null,
+        "tokkiyouc" -> Image(painterResource(R.drawable.ic_tokkiyouc), contentDescription = null,
             modifier = Modifier.size(size).clip(shape))
         else -> Box(Modifier.size(size).clip(shape).background(MaterialTheme.colorScheme.primaryContainer),
             contentAlignment = Alignment.Center) {

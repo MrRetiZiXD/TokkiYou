@@ -3,7 +3,7 @@ import pathlib, re, sys, unittest
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from margyt import axml, manifest, widget
+from tokkiyou import axml, manifest, widget
 
 
 class WidgetTests(unittest.TestCase):
@@ -22,7 +22,7 @@ class WidgetTests(unittest.TestCase):
                 self.assertEqual(axml.ATTR_IDS[document.pool.get(at)], number)
 
     def test_the_layout_number_is_the_one_the_class_uses(self):
-        source = (ROOT / "inject/java/cat/narezany/margyt/CatWidget.java").read_text(encoding="utf-8")
+        source = (ROOT / "inject/java/cat/narezany/tokkiyou/CatWidget.java").read_text(encoding="utf-8")
         written = int(re.search(r"static final int LAYOUT = (0x[0-9A-Fa-f]+);", source).group(1), 16)
         self.assertEqual(written, widget.LAYOUT_ID)
 
@@ -32,10 +32,10 @@ class WidgetTests(unittest.TestCase):
         app = document.make_element("application")
         document.nodes = [root, app, document.close_element(app), document.close_element(root)]
         document.pending = []
-        manifest.add_widget(document, "cat.narezany.margyt.CatWidget", widget.XML_ID)
+        manifest.add_widget(document, "cat.narezany.tokkiyou.CatWidget", widget.XML_ID)
         again = axml.Axml.parse(document.build())
         receiver = again.elements("receiver")[0]
-        self.assertEqual(again.attr_string(receiver, "name"), "cat.narezany.margyt.CatWidget")
+        self.assertEqual(again.attr_string(receiver, "name"), "cat.narezany.tokkiyou.CatWidget")
         self.assertEqual(again.attr(receiver, "exported").data, 0xFFFFFFFF)
         self.assertEqual(again.attr_string(again.elements("action")[0], "name"),
                          "android.appwidget.action.APPWIDGET_UPDATE")

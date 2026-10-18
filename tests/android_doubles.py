@@ -32,10 +32,10 @@ public ViewGroup.LayoutParams params;public ViewGroup.LayoutParams getLayoutPara
 'android/graphics/PorterDuffColorFilter.java':'package android.graphics;public class PorterDuffColorFilter {public PorterDuffColorFilter(int c,PorterDuff.Mode m){}}',
 'android/view/animation/DecelerateInterpolator.java':'package android.view.animation;public class DecelerateInterpolator {}',
 'android/animation/ValueAnimator.java':'package android.animation;public class ValueAnimator {int value;public interface AnimatorUpdateListener {void onAnimationUpdate(ValueAnimator v);}public static ValueAnimator ofInt(int a,int b){ValueAnimator v=new ValueAnimator();v.value=b;return v;}public void setDuration(long l){}public void setInterpolator(Object o){}public void addUpdateListener(AnimatorUpdateListener l){l.onAnimationUpdate(this);}public Object getAnimatedValue(){return value;}public void start(){}public void cancel(){}}',
-'cat/narezany/margyt/Accent.java':'package cat.narezany.margyt;class Accent {static int colour(){return 0xffa4c9ff;}}',
-'cat/narezany/margyt/LockArt.java':'package cat.narezany.margyt;class LockArt {static final int WIDTH=20,HEIGHT=26;static android.graphics.Bitmap get(boolean b){return null;}}'
+'cat/narezany/tokkiyou/Accent.java':'package cat.narezany.tokkiyou;class Accent {static int colour(){return 0xffa4c9ff;}}',
+'cat/narezany/tokkiyou/LockArt.java':'package cat.narezany.tokkiyou;class LockArt {static final int WIDTH=20,HEIGHT=26;static android.graphics.Bitmap get(boolean b){return null;}}'
 }
-STUBS['cat/narezany/margyt/PlayerTools.java']='package cat.narezany.margyt;class PlayerTools{static float rate=2;static int writes;static float speed(){return rate;}static boolean applyHoldRate(){writes++;return true;}}'
+STUBS['cat/narezany/tokkiyou/PlayerTools.java']='package cat.narezany.tokkiyou;class PlayerTools{static float rate=2;static int writes;static float speed(){return rate;}static boolean applyHoldRate(){writes++;return true;}}'
 STUBS['android/view/ViewGroup.java']+='}'
 
 
@@ -46,13 +46,13 @@ def mod_doubles():
     about; `Probe` is the same constants with nothing behind them.
     """
     import re
-    base = ROOT / 'inject/java/cat/narezany/margyt'
+    base = ROOT / 'inject/java/cat/narezany/tokkiyou'
     probe = (base / 'Probe.java').read_text(encoding='utf-8')
     constants = ' '.join(re.search(r'static final int (THEME.*?);', probe, re.S).group(1).split())
     return {
-        'cat/narezany/margyt/Probe.java': 'package cat.narezany.margyt;final class Probe{static final int %s;'
+        'cat/narezany/tokkiyou/Probe.java': 'package cat.narezany.tokkiyou;final class Probe{static final int %s;'
             'static long start(){return 0L;}static void stop(int what,long started){}}' % constants,
-        'cat/narezany/margyt/Names.java': (base / 'Names.java').read_text(encoding='utf-8'),
+        'cat/narezany/tokkiyou/Names.java': (base / 'Names.java').read_text(encoding='utf-8'),
         'android/util/SparseArray.java': 'package android.util;public class SparseArray<E>{private final java.util.HashMap<Integer,E> held=new java.util.HashMap<>();'
             'public E get(int key){return held.get(key);}public void put(int key,E value){held.put(key,value);}}',
     }
@@ -63,12 +63,12 @@ def with_mod(sources):
     doubles = mod_doubles()
     everything = ' '.join(sources.values())
     if 'Probe.' in everything:
-        sources.setdefault('cat/narezany/margyt/Probe.java', doubles['cat/narezany/margyt/Probe.java'])
+        sources.setdefault('cat/narezany/tokkiyou/Probe.java', doubles['cat/narezany/tokkiyou/Probe.java'])
     if 'Local.of(' in everything:
         # the words as they were written: the tests read the Russian
-        sources.setdefault('cat/narezany/margyt/Local.java',
-                           'package cat.narezany.margyt;final class Local{static String of(String russian){return russian;}}')
+        sources.setdefault('cat/narezany/tokkiyou/Local.java',
+                           'package cat.narezany.tokkiyou;final class Local{static String of(String russian){return russian;}}')
     if 'Names.' in everything:
-        sources.setdefault('cat/narezany/margyt/Names.java', doubles['cat/narezany/margyt/Names.java'])
+        sources.setdefault('cat/narezany/tokkiyou/Names.java', doubles['cat/narezany/tokkiyou/Names.java'])
         sources.setdefault('android/util/SparseArray.java', doubles['android/util/SparseArray.java'])
     return sources

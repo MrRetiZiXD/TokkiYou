@@ -55,7 +55,7 @@ data class Catalog(val patcher: PatcherRelease?, val channel: String, val mods: 
          * anything.
          */
         const val SOURCE = "https://raw.githubusercontent.com/BottomSalamander/TokkiYou/main/patcher/catalog.json"
-        private const val BETA = "https://margy.narez.xyz/api/patcher/beta"
+        private const val BETA = "https://tokkiyou.narez.xyz/api/patcher/beta"
 
         private fun kept(context: Context) = File(context.filesDir, "catalog.json")
 

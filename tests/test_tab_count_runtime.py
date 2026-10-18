@@ -2,7 +2,7 @@ import pathlib, shutil, subprocess, sys, tempfile, unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
-HARNESS = """package cat.narezany.margyt;
+HARNESS = """package cat.narezany.tokkiyou;
 public class TabCountHarness {
     static void check(boolean ok, String what) { if (!ok) throw new AssertionError(what); }
     public static void main(String[] args) {
@@ -28,10 +28,10 @@ class TabCountTests(unittest.TestCase):
             (room / "TabCountHarness.java").write_text(HARNESS, encoding="utf-8")
             built = subprocess.run(
                 ["javac", "-encoding", "UTF-8", "-d", folder,
-                 str(ROOT / "inject/java/cat/narezany/margyt/TabCount.java"),
+                 str(ROOT / "inject/java/cat/narezany/tokkiyou/TabCount.java"),
                  str(room / "TabCountHarness.java")], capture_output=True, text=True)
             self.assertEqual(0, built.returncode, built.stderr)
-            ran = subprocess.run(["java", "-cp", folder, "cat.narezany.margyt.TabCountHarness"],
+            ran = subprocess.run(["java", "-cp", folder, "cat.narezany.tokkiyou.TabCountHarness"],
                                  capture_output=True, text=True)
             self.assertEqual(0, ran.returncode, ran.stderr)
 

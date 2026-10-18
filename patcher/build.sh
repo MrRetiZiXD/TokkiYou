@@ -12,6 +12,6 @@ cd "$here"
 out="$here/../build/patcher"
 mkdir -p "$out"
 version=$(grep -o 'versionName = "[^"]*"' app/build.gradle.kts | cut -d'"' -f2)
-cp app/build/outputs/apk/release/app-release-unsigned.apk "$out/margy-patcher-$version.apk"
-java -jar "$here/../tools/uber-apk-signer.jar" -a "$out/margy-patcher-$version.apk" --allowResign --overwrite > /dev/null
-echo "$out/margy-patcher-$version.apk"
+cp app/build/outputs/apk/release/app-release-unsigned.apk "$out/tokkiyou-patcher-$version.apk"
+java -jar "$here/../tools/uber-apk-signer.jar" -a "$out/tokkiyou-patcher-$version.apk" --allowResign --overwrite > /dev/null
+echo "$out/tokkiyou-patcher-$version.apk"

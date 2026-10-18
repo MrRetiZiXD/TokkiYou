@@ -17,4 +17,4 @@ PYTHON=python3
 if ! "$PYTHON" -c "import sys" >/dev/null 2>&1; then
     PYTHON=python
 fi
-exec "$PYTHON" -m margyt "$@"
+exec "$PYTHON" -m tokkiyou "$@"

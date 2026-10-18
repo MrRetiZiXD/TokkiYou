@@ -1,7 +1,7 @@
 """Execute selection, native fallback and clipboard paths from production methods."""
 import pathlib, shutil, unittest, subprocess
 import test_settings_safety_runtime as safety
-from margyt import dexpatch
+from tokkiyou import dexpatch
 import tempfile
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 
@@ -18,10 +18,10 @@ class CommentSelectionTest(unittest.TestCase):
    '    private static void copyComment',
    '    private static void selectComment'])
   sources={
-   'cat/narezany/margyt/NativeRead.java':(ROOT/'inject/java/cat/narezany/margyt/NativeRead.java').read_text(encoding='utf-8'),
+   'cat/narezany/tokkiyou/NativeRead.java':(ROOT/'inject/java/cat/narezany/tokkiyou/NativeRead.java').read_text(encoding='utf-8'),
    'kotlin/jvm/functions/Function0.java':'package kotlin.jvm.functions;public interface Function0<R>{R invoke();}',
    'X/NativeAction.java':'package X;public class NativeAction{public String LIZIZ,LIZLLL;public Integer LIZJ;public kotlin.jvm.functions.Function0 LJ;}',
-   'cat/narezany/margyt/CommentSelection.java':(ROOT/'inject/java/cat/narezany/margyt/CommentSelection.java').read_text(encoding='utf-8'),
+   'cat/narezany/tokkiyou/CommentSelection.java':(ROOT/'inject/java/cat/narezany/tokkiyou/CommentSelection.java').read_text(encoding='utf-8'),
    'android/content/Context.java':'''package android.content;public class Context {public static final String CLIPBOARD_SERVICE="clipboard";public ClipboardManager clipboard=new ClipboardManager();public Object getSystemService(String s){return clipboard;}public Resources getResources(){return new Resources();}public static class Resources{public Metrics getDisplayMetrics(){return new Metrics();}}public static class Metrics{public float density=1;}}''',
    'android/content/ClipData.java':'package android.content;public class ClipData{public String text;public static ClipData newPlainText(String label,String text){ClipData c=new ClipData();c.text=text;return c;}}',
    'android/content/ClipboardManager.java':'package android.content;public class ClipboardManager{public ClipData clip;public void setPrimaryClip(ClipData c){clip=c;}}',
@@ -29,7 +29,7 @@ class CommentSelectionTest(unittest.TestCase):
    'android/view/ViewGroup.java':'package android.view;public class ViewGroup extends View{public int getChildCount(){return 0;}public View getChildAt(int i){return null;}}',
    'android/text/TextUtils.java':'package android.text;public class TextUtils{public static boolean isEmpty(String s){return s==null||s.isEmpty();}}',
    'android/widget/TextView.java':'''package android.widget;public class TextView extends android.view.View{public int start=-1,end=-1,color;public String text;public TextView(android.content.Context c){context=c;}public void setText(String s){text=s;}public void setTextColor(int c){color=c;}public void setTextSize(float n){}public void setTextIsSelectable(boolean b){}public void setFocusable(boolean b){}public void setFocusableInTouchMode(boolean b){}public void setLineSpacing(float a,float b){}public void setPadding(int a,int b,int c,int d){}public CharSequence getText(){return text;}public int getSelectionStart(){return start;}public int getSelectionEnd(){return end;}}''',
-   'cat/narezany/margyt/Test.java':r'''package cat.narezany.margyt;
+   'cat/narezany/tokkiyou/Test.java':r'''package cat.narezany.tokkiyou;
 import android.content.*;import android.view.*;import android.widget.*;import android.text.*;import java.util.*;import kotlin.jvm.functions.Function0;
 class Diary{static void note(String s){}}
 class Skin{int text=123;static Skin remembered(Context c){return new Skin();}}
@@ -69,7 +69,7 @@ public static void main(String[] a){
     file=pathlib.Path(folder)/name;file.parent.mkdir(parents=True,exist_ok=True);file.write_text(source,encoding='utf-8');files.append(str(file))
    result=subprocess.run(['javac','-source','8','-target','8','-encoding','UTF-8','-d',folder,*files],capture_output=True,text=True)
    self.assertEqual(0,result.returncode,result.stderr)
-   result=subprocess.run(['java','-cp',folder,'cat.narezany.margyt.Test'],capture_output=True,text=True)
+   result=subprocess.run(['java','-cp',folder,'cat.narezany.tokkiyou.Test'],capture_output=True,text=True)
    self.assertEqual(0,result.returncode,result.stderr)
 
  def test_hook_is_scoped_and_idempotent(self):
@@ -93,12 +93,12 @@ public static void main(String[] a){
 
  @unittest.skipUnless(shutil.which('javac') and shutil.which('java'),'JDK required')
  def test_language_is_initialized_before_new_labels(self):
-  source=(ROOT/'inject/java/cat/narezany/margyt/Text.java').read_text(encoding='utf-8')
+  source=(ROOT/'inject/java/cat/narezany/tokkiyou/Text.java').read_text(encoding='utf-8')
   sources={
-   'cat/narezany/margyt/NativeRead.java':(ROOT/'inject/java/cat/narezany/margyt/NativeRead.java').read_text(encoding='utf-8'),
+   'cat/narezany/tokkiyou/NativeRead.java':(ROOT/'inject/java/cat/narezany/tokkiyou/NativeRead.java').read_text(encoding='utf-8'),
    'kotlin/jvm/functions/Function0.java':'package kotlin.jvm.functions;public interface Function0<R>{R invoke();}',
-   'X/NativeAction.java':'package X;public class NativeAction{public String LIZIZ,LIZLLL;public Integer LIZJ;public kotlin.jvm.functions.Function0 LJ;}','cat/narezany/margyt/Text.java':source,
-   'Test.java':'''public class Test{public static void main(String[] a)throws Exception{Class<?> type=Class.forName("cat.narezany.margyt.Text");java.lang.reflect.Field field=type.getDeclaredField("COMMENT_COPY_SELECTED");field.setAccessible(true);String value=(String)field.get(null);String language=java.util.Locale.getDefault().getLanguage();if(!value.equals(language.equals("ru")?"Копировать выделенное":language.equals("uk")?"Копіювати виділене":"Copy selection"))throw new AssertionError(value);}}'''}
+   'X/NativeAction.java':'package X;public class NativeAction{public String LIZIZ,LIZLLL;public Integer LIZJ;public kotlin.jvm.functions.Function0 LJ;}','cat/narezany/tokkiyou/Text.java':source,
+   'Test.java':'''public class Test{public static void main(String[] a)throws Exception{Class<?> type=Class.forName("cat.narezany.tokkiyou.Text");java.lang.reflect.Field field=type.getDeclaredField("COMMENT_COPY_SELECTED");field.setAccessible(true);String value=(String)field.get(null);String language=java.util.Locale.getDefault().getLanguage();if(!value.equals(language.equals("ru")?"Копировать выделенное":language.equals("uk")?"Копіювати виділене":"Copy selection"))throw new AssertionError(value);}}'''}
   with tempfile.TemporaryDirectory() as folder:
    files=[]
    for name,content in sources.items():

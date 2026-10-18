@@ -2,7 +2,7 @@
 import pathlib, shutil, subprocess, tempfile, unittest, json, zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-JAVA = ROOT / 'inject/java/cat/narezany/margyt'
+JAVA = ROOT / 'inject/java/cat/narezany/tokkiyou'
 
 class OfflineCommentsRuntime(unittest.TestCase):
     def test_archive_and_native_pagination(self):
@@ -11,15 +11,15 @@ class OfflineCommentsRuntime(unittest.TestCase):
             self.skipTest('JDK unavailable')
         with tempfile.TemporaryDirectory() as directory:
             base = pathlib.Path(directory)
-            package = base / 'cat/narezany/margyt'
+            package = base / 'cat/narezany/tokkiyou'
             package.mkdir(parents=True)
             shutil.copy2(JAVA / 'OfflineCommentArchive.java', package)
             shutil.copy2(JAVA / 'NativeRead.java', package)
-            (package / 'NativeJson.java').write_text('package cat.narezany.margyt;final class NativeJson {static String encode(Object value){return "";}}', encoding='utf-8')
+            (package / 'NativeJson.java').write_text('package cat.narezany.tokkiyou;final class NativeJson {static String encode(Object value){return "";}}', encoding='utf-8')
             source = (JAVA / 'OfflineComments.java').read_text(encoding='utf-8')
             fetch = source[source.index(' private static List<OfflineCommentArchive.Row> fetch('):source.index(' public static void settings(')]
             fetch = fetch.replace('"com.ss.android.ugc.aweme.comment.commentlist.api.CommentApi$RealApi"', '"fake.Api$RealApi"').replace('"com.ss.android.ugc.aweme.comment.commentlist.api.CommentApi"', '"fake.Api"').replace('"X.01TL"', '"fake.Factory"').replace('"X.0Vgo"', '"fake.Task"')
-            harness = '''package cat.narezany.margyt;
+            harness = '''package cat.narezany.tokkiyou;
 import java.io.*;import java.util.*;import java.lang.reflect.*;import java.util.concurrent.*;import fake.SystemClock;
 public class Harness {
  static class Prefs {boolean getBoolean(String key,boolean fallback){return true;}}
@@ -60,7 +60,7 @@ public class Harness {
             result = subprocess.run([javac, '-encoding','UTF-8','-d',str(base),*[str(p) for p in base.rglob('*.java')]], capture_output=True, text=True)
             self.assertEqual(result.returncode,0,result.stderr)
             archive = base / 'comments.zip'
-            result = subprocess.run([java,'-cp',str(base),'cat.narezany.margyt.Harness',str(archive)], capture_output=True, text=True)
+            result = subprocess.run([java,'-cp',str(base),'cat.narezany.tokkiyou.Harness',str(archive)], capture_output=True, text=True)
             self.assertEqual(result.returncode,0,result.stderr)
             with zipfile.ZipFile(archive) as z:
                 self.assertEqual(set(z.namelist()),{'comments.json','comments.txt'})

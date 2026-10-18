@@ -1,7 +1,7 @@
 """Execute font ownership, weights, restoration and bounded traversal."""
 import unittest
 import test_settings_safety_runtime as safety
-from margyt import dexpatch
+from tokkiyou import dexpatch
 class FontCoverageTest(unittest.TestCase):
  def test_real_font_application(self):
   body=''.join(safety.method('Fonts.java',m) for m in ('    private static boolean drawsGlyphs','    public static void applyTree','    private static void applyTree','    public static void apply(TextView','    private static Typeface keep','    public static void setTypeface(TextView view, Typeface face)','    public static void setTypeface(TextView view, Typeface face, int style)','    private static Typeface forText','    private static Typeface forStyle'))
@@ -11,7 +11,7 @@ class FontCoverageTest(unittest.TestCase):
    'android/view/View.java':'package android.view;public class View {}',
    'android/view/ViewGroup.java':'package android.view;public class ViewGroup extends View {public java.util.List<View> children=new java.util.ArrayList<>();public int getChildCount(){return children.size();}public View getChildAt(int i){return children.get(i);}}',
    'android/widget/TextView.java':'package android.widget;import android.graphics.Typeface;public class TextView extends android.view.View {public Typeface type;public int writes;public Typeface getTypeface(){return type;}public void setTypeface(Typeface f){type=f;writes++;}public void setTypeface(Typeface f,int style){type=Typeface.create(f,style);writes++;}}',
-   'Test.java':'''import android.content.Context;import android.graphics.Typeface;import android.widget.TextView;class Margy{static Context context(){return null;}}public class Test {
+   'Test.java':'''import android.content.Context;import android.graphics.Typeface;import android.widget.TextView;class TokkiYou{static Context context(){return null;}}public class Test {
  static Typeface selected=new Typeface("custom",0);static Typeface chosenFace(){return selected;}
  static final String NUNITO="nunito";static String name(){return "custom";}static Typeface nunito(Context context,boolean black){return new Typeface("nunito",black?Typeface.BOLD:Typeface.NORMAL);}
  static class OwnedFont {Typeface original,applied;OwnedFont(Typeface f){original=f;}}
