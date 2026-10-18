@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="TokkiYou" width="640">
+<img src="assets/newbanner.png" alt="TokkiYou" width="640">
 
 **A TikTok mod for Android.**
 Built from the official apk with the patches in this repository.
