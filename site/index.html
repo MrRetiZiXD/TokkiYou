@@ -113,7 +113,7 @@ footer small{display:block;max-width:60ch;line-height:1.55}
     <nav>
       <a href="https://t.me/tokkiyou" data-t="nav_channel">Канал</a>
       <a href="https://t.me/tokkiyougroup" data-t="nav_forum">Форум</a>
-      <a href="https://github.com/BottomSalamander/TokkiYou">Исходники</a>
+      <a href="https://github.com/MrRetiZiXD/TokkiYou">Исходники</a>
       <span class="switches">
         <button class="sw" id="lang" type="button">EN</button>
         <button class="sw" id="theme" type="button" aria-label="тема">☾</button>
@@ -142,7 +142,7 @@ footer small{display:block;max-width:60ch;line-height:1.55}
       </div>
       <a class="get" href="https://git.narez.xyz/narezany/TokkiYou/releases/download/patcher-v1.1/tokkiyou-patcher.apk" data-t="download">Скачать патчер</a>
       <div class="also"><span data-t="patcher_note">Патчер сам скачает TikTok, наложит мод и будет обновлять его.</span></div>
-      <div class="also"><a id="tget" href="https://github.com/BottomSalamander/TokkiYou/releases/latest/download/tokkiyou.apk" data-t="direct">Готовый апк</a> · <span data-t="source">Исходники</span>: <a href="https://github.com/BottomSalamander/TokkiYou">TokkiYou</a></div>
+      <div class="also"><a id="tget" href="https://github.com/MrRetiZiXD/TokkiYou/releases/latest/download/tokkiyou.apk" data-t="direct">Готовый апк</a> · <span data-t="source">Исходники</span>: <a href="https://github.com/MrRetiZiXD/TokkiYou">TokkiYou</a></div>
     </article>
 
   </section>
@@ -184,7 +184,7 @@ footer small{display:block;max-width:60ch;line-height:1.55}
     <div class="links">
       <a href="https://t.me/tokkiyou" data-t="nav_channel">Канал</a>
       <a href="https://t.me/tokkiyougroup" data-t="nav_forum">Форум</a>
-      <a href="https://github.com/BottomSalamander/TokkiYou">TokkiYou</a>
+      <a href="https://github.com/MrRetiZiXD/TokkiYou">TokkiYou</a>
     </div>
     <small data-t="foot">TokkiYou под GPL-3.0 с условием, что блок с автором и поддержкой из мода не убирают. Апк TikTok принадлежит его владельцу.</small>
   </div>
@@ -275,7 +275,7 @@ async function json(url, then) {
   } catch (trouble) { /* offline: the page still reads */ }
 }
 
-json("https://raw.githubusercontent.com/BottomSalamander/TokkiYou/main/version.json", said => {
+json("https://raw.githubusercontent.com/MrRetiZiXD/TokkiYou/main/version.json", said => {
   if (said.version) document.getElementById("tver").textContent = said.version;
   if (said.url) document.getElementById("tget").href = said.url;
 });

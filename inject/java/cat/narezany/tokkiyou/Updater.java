@@ -35,7 +35,7 @@ public final class Updater {
     private Updater() {}
 
     private static final String SOURCE =
-            "https://raw.githubusercontent.com/BottomSalamander/TokkiYou/main/version.json";
+            "https://raw.githubusercontent.com/MrRetiZiXD/TokkiYou/main/version.json";
 
     public static final String KEY_REMIND = "update_remind";
 

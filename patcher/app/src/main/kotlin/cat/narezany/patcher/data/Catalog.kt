@@ -54,7 +54,7 @@ data class Catalog(val patcher: PatcherRelease?, val channel: String, val mods: 
          * a link there can be changed for everybody without anybody updating
          * anything.
          */
-        const val SOURCE = "https://raw.githubusercontent.com/BottomSalamander/TokkiYou/main/patcher/catalog.json"
+        const val SOURCE = "https://raw.githubusercontent.com/MrRetiZiXD/TokkiYou/main/patcher/catalog.json"
         private const val BETA = "https://tokkiyou.narez.xyz/api/patcher/beta"
 
         private fun kept(context: Context) = File(context.filesDir, "catalog.json")

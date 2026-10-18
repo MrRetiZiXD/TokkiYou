@@ -93,9 +93,9 @@ public class SettingsActivity extends Activity {
             "https://www.tiktok.com/@mrretizixd?_r=1&_t=ZS-9AYHKwMoPEw";
     /** Where a receipt goes: the channel's own messages, not somebody's inbox. */
     private static final String CHANNEL_WRITE = "";
-    private static final String GIT = "https://github.com/BottomSalamander/TokkiYou";
+    private static final String GIT = "https://github.com/MrRetiZiXD/TokkiYou";
     private static final String DOCS_PLUGINS =
-            "https://github.com/BottomSalamander/TokkiYou/blob/main/docs/plugins.md";
+            "https://github.com/MrRetiZiXD/TokkiYou/blob/main/docs/plugins.md";
     private static final String YOOMONEY = "";
 
     private boolean countriesOpen;
@@ -588,7 +588,7 @@ public class SettingsActivity extends Activity {
         LinearLayout links = card();
         links.addView(linkRow("group", Text.FORUM, "@tokkiyougroup", FORUM));
         links.addView(line());
-        links.addView(linkRow("extension", Text.SOURCE, "BottomSalamander/TokkiYou", GIT));
+        links.addView(linkRow("extension", Text.SOURCE, "MrRetiZiXD/TokkiYou", GIT));
         column.addView(wrap(links));
 
         column.addView(section(Text.THANKS));

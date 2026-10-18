@@ -35,7 +35,7 @@ class TokkiYouMetadataTest(unittest.TestCase):
         self.assertEqual(release["version"], "1.0.0")
         self.assertEqual(
             release["url"],
-            "https://github.com/BottomSalamander/TokkiYou/releases/latest/download/tokkiyou.apk",
+            "https://github.com/MrRetiZiXD/TokkiYou/releases/latest/download/tokkiyou.apk",
         )
         self.assertIs(release["force_update"], False)
         self.assertTrue(release["features"])

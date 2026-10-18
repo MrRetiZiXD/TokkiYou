@@ -3,7 +3,6 @@
 <img src="assets/banner.png" alt="TokkiYou" width="640">
 
 **A TikTok mod for Android.**
-The second in the line after [TokkiYou](https://github.com/narezany/Margelet).
 Built from the official apk with the patches in this repository.
 
 [![channel](https://img.shields.io/badge/channel-TokkiYou-C6A4FF?style=flat-square)](https://t.me/tokkiyou)
@@ -467,61 +466,6 @@ official app, and the official app has to go first.
 
 The one permission the build adds is `REQUEST_INSTALL_PACKAGES`, and only
 because the mod offers its own updates.
-
-## Building it yourself
-
-You need a JDK (17 or newer) and Python 3. Nothing else: smali, d8, android.jar
-and the signer are downloaded into `tools/` on the first run, each pinned to a
-version. And a **universal** apk of TikTok — on APKMirror the variant of type
-**APK**, not **BUNDLE**, `arm64-v8a`, `nodpi`. A split has no resource table of
-its own to read.
-
-```bash
-git clone https://github.com/BottomSalamander/TokkiYou
-cd TokkiYou
-./build.sh path/to/tiktok.apk
-```
-
-The apk lands in `build/`. Reaching the colour where it actually lives means
-opening most of the dex files rather than a handful, so the first build is
-minutes of taking them apart and putting them back, several at a time and as
-many as the machine has memory for.
-
-The builds after it are shorter, because three things are kept in
-`~/.cache/tokkiyou-dex`: every dex taken apart, every patched dex under a name
-made from what was rewritten in it, and which of those a given set of rules
-led to. Change only the mod's Java and no dex is opened at all; change one
-hook and every dex is rewritten again but only the ones that came out
-different are reassembled. `TOKKIYOU_NO_CACHE=1` ignores all of it,
-`TOKKIYOU_WORKERS` says how many dex files to do at once.
-
-```
-==> Opening the apk
-    26151 entries
-    package com.zhiliaoapp.musically, staying as it is
-    minSdk 23, dex 035
-==> The accent colour
-    #FE2C55
-==> Rewriting the bytecode
-    38 of 52 dex files mention it
-    classes22.dex: 21 (getSimCountryIso x1, getSimState x10, ...)
-```
-
-To move the brand colour everywhere, including the pictures the palette cannot
-reach while the app runs:
-
-```bash
-./build.sh path/to/tiktok.apk --accent 8DD1B0
-```
-
-Everything the build produces is made for the apk's own minSdk, and it checks:
-a dex assembled for a newer api is stamped with a newer format, and an Android
-that does not know that format refuses the whole app rather than the one file.
-TikTok's is dex 035, back to Android 6 — which is not where this would have been
-noticed.
-
-If a rewrite matches nothing where it must match something, the build stops
-rather than handing you an apk that quietly does nothing.
 
 ## Tests
 
